@@ -13,7 +13,7 @@ import com.sun.net.httpserver.HttpServer;
 
 import quest.controller.QuestStarter;
 import quest.controller.log.Logger;
-import quest.model.Quest;
+import quest.model.quest1.Quest;
 
 public class QuestHttpServer {
 
@@ -25,8 +25,8 @@ public class QuestHttpServer {
 				System.out.println("Called handler");
 
 				String response = "<html>" + "<head><meta charset=\"UTF-8\"/></head>" + "<body>\"tensa\":{\"weight\":"
-						+ Quest.inst().rings.weight + ",\"relay\":" + Quest.inst().rings.magneticLock + "}</body>"
-						+ "</html>";
+						+ Quest.inst().rings.getWeight() + ",\"relay\":" + Quest.inst().rings.isMagneticLocked()
+						+ "}</body>" + "</html>";
 				t.sendResponseHeaders(200, response.getBytes().length);
 				t.getResponseBody().write(response.getBytes());
 				t.getResponseBody().flush();
@@ -36,7 +36,7 @@ public class QuestHttpServer {
 		httpServer.createContext("/api/tenza/relay/set").setHandler(new HttpHandler() {
 			@Override
 			public void handle(HttpExchange t) throws IOException {
-				Quest.inst().rings.magneticLock = true;
+				Quest.inst().rings.lock(true);
 				DatagramPacket dp = Quest.inst().rings.relayOpen();
 				QuestStarter.udpServer.socket.send(dp);
 				String response = "status:ok";

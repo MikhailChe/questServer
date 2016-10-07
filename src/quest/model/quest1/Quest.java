@@ -1,4 +1,4 @@
-package quest.model;
+package quest.model.quest1;
 
 public class Quest {
 	private static Quest instance;
