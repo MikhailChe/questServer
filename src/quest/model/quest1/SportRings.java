@@ -3,13 +3,18 @@ package quest.model.quest1;
 import static quest.controller.log.Logger.MsgType.WARNING;
 
 import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.SocketAddress;
 
 import quest.controller.log.Logger;
-import quest.model.ifaces.InputByteProcessor;
+import quest.model.common.classes.MicroUnit;
+import quest.model.common.ifaces.InputByteProcessor;
 
-public class SportRings implements InputByteProcessor {
+public class SportRings extends MicroUnit implements InputByteProcessor {
+	public SportRings(SocketAddress addr) {
+		super(addr);
+
+	}
+
 	int weight = 0;
 	boolean magneticLock = false;
 
@@ -31,18 +36,11 @@ public class SportRings implements InputByteProcessor {
 
 	public DatagramPacket relayOpen() {
 		String response = "\"relay\":true";
-		DatagramPacket dp;
-		try {
-			dp = new DatagramPacket(response.getBytes(), response.getBytes().length,
-					InetAddress.getByAddress(new byte[] { (byte) 192, (byte) 168, (byte) 243, 2 }), 2016);
-			return dp;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return datagramForData(0, true, response.getBytes());
 	}
 
-	public void tenzoProcess(byte[] data) {
+	@Override
+	public void processInput(byte[] data) {
 		switch (data[0]) {
 		case 0: {
 			if (data.length >= 5) {
@@ -65,11 +63,5 @@ public class SportRings implements InputByteProcessor {
 			Logger.inst().print("Пришли данные, о которых мы не знаем", WARNING);
 			break;
 		}
-	}
-
-	@Override
-	public void processInput(byte[] data) {
-		// TODO Auto-generated method stub
-
 	}
 }

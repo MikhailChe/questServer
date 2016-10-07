@@ -1,6 +1,6 @@
 package quest.model.quest1;
 
-import quest.model.ifaces.InputByteProcessor;
+import quest.model.common.ifaces.InputByteProcessor;
 
 public class LockerKnocker implements InputByteProcessor {
 	int[] accelOmeter = new int[3];
