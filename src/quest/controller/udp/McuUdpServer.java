@@ -12,12 +12,16 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class UDPServer implements Runnable, AutoCloseable {
+import quest.controller.log.Logger;
+import quest.controller.log.Logger.MsgType;
 
-	public final DatagramSocket socket;
-	public final Map<InetAddress, Consumer<byte[]>> services = Collections.synchronizedMap(new Hashtable<>());
+public class McuUdpServer implements Runnable, AutoCloseable {
 
-	public UDPServer(int port) throws SocketException {
+	public final DatagramSocket						socket;
+	public final Map<InetAddress, Consumer<byte[]>>	services	= Collections
+			.synchronizedMap(new Hashtable<>());
+
+	public McuUdpServer(int port) throws SocketException {
 		socket = new DatagramSocket(port);
 	}
 
@@ -31,17 +35,22 @@ public class UDPServer implements Runnable, AutoCloseable {
 	}
 
 	public void run() {
+		final Logger LOG = Logger.inst();
 		byte[] inputBuffer = new byte[65535];
-		DatagramPacket inputPacket = new DatagramPacket(inputBuffer, inputBuffer.length);
+		DatagramPacket inputPacket = new DatagramPacket(inputBuffer,
+				inputBuffer.length);
 		while (true) {
 			try {
 				socket.receive(inputPacket);
-				Consumer<byte[]> consumer = services.get(inputPacket.getAddress());
+				Consumer<byte[]> consumer = services
+						.get(inputPacket.getAddress());
 				if (consumer != null) {
-					consumer.accept(Arrays.copyOf(inputPacket.getData(), inputPacket.getLength()));
+					consumer.accept(Arrays.copyOf(inputPacket.getData(),
+							inputPacket.getLength()));
 				}
 			} catch (IOException e) {
-				System.err.println("Не смог поулчить UDP сообщение: " + e.getLocalizedMessage());
+				LOG.print(("Не смог поулчить UDP сообщение: "
+						+ e.getLocalizedMessage()), MsgType.ERROR);
 			}
 		}
 	}
@@ -50,5 +59,4 @@ public class UDPServer implements Runnable, AutoCloseable {
 	public void close() throws Exception {
 		socket.close();
 	}
-
 }

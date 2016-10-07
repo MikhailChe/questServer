@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Logger {
 	static volatile Logger	instance;
@@ -31,12 +32,15 @@ public class Logger {
 		return instance;
 	}
 
-	public Logger() {
+	private Logger() {
 		LocalDateTime ldt = LocalDateTime.now();
 		String dateTime = "" + ldt.getYear() + "." + ldt.getMonthValue() + "."
 				+ ldt.getDayOfMonth() + " " + ldt.getHour() + "-"
 				+ ldt.getMinute() + "-" + ldt.getSecond();
+		dateTime = ldt
+				.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH-mm-ss"));
 		Charset cs = StandardCharsets.UTF_8;
+
 		Path parentPath = Paths.get("log", dateTime);
 		if (Files.notExists(parentPath, LinkOption.NOFOLLOW_LINKS)) {
 			try {
@@ -46,7 +50,6 @@ public class Logger {
 			}
 		}
 		try {
-
 			Path errorPath = parentPath.resolve("error.log");
 
 			errorLog = Files
@@ -93,29 +96,31 @@ public class Logger {
 	}
 
 	public void print(String msg, MsgType type) {
+		String dateTime = "" + System.currentTimeMillis();
+		String msgToOutput = String.format("%s:\t%s%n", dateTime, msg);
 		switch (type) {
 		case INFO:
-			System.out.println(msg);
+			System.out.print(msgToOutput);
 			try {
-				infoLog.write(msg);
+				infoLog.write(msgToOutput);
 				infoLog.flush();
 			} catch (IOException | NullPointerException e) {
 				e.printStackTrace();
 			}
 			break;
 		case WARNING:
-			System.err.println(msg);
+			System.err.print(msgToOutput);
 			try {
-				warningLog.write(msg);
+				warningLog.write(msgToOutput);
 				warningLog.flush();
 			} catch (IOException | NullPointerException e) {
 				e.printStackTrace();
 			}
 			break;
 		case ERROR:
-			System.err.println(msg);
+			System.err.print(msgToOutput);
 			try {
-				errorLog.write(msg);
+				errorLog.write(msgToOutput);
 				errorLog.flush();
 			} catch (IOException | NullPointerException e) {
 				e.printStackTrace();
