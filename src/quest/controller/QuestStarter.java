@@ -10,10 +10,10 @@ import quest.controller.udp.QuestHttpServer;
 import quest.controller.udp.McuUdpServer;
 import quest.model.Quest;
 
-public class Starter {
+public class QuestStarter {
 
 	public static QuestHttpServer	httpServer;
-	public static McuUdpServer			udpServer;
+	public static McuUdpServer		udpServer;
 
 	public static void main(String... strings) {
 		final Logger LOG = Logger.inst();
