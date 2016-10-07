@@ -24,31 +24,28 @@ public class QuestHttpServer {
 			public void handle(HttpExchange t) throws IOException {
 				System.out.println("Called handler");
 
-				String response = "<html>"
-						+ "<head><meta charset=\"UTF-8\"/></head>"
-						+ "<body>\"tensa\":{\"weight\":"
-						+ Quest.inst().tenzo.weight + ",\"relay\":"
-						+ Quest.inst().tenzo.relay + "}</body>" + "</html>";
+				String response = "<html>" + "<head><meta charset=\"UTF-8\"/></head>" + "<body>\"tensa\":{\"weight\":"
+						+ Quest.inst().rings.weight + ",\"relay\":" + Quest.inst().rings.magneticLock + "}</body>"
+						+ "</html>";
 				t.sendResponseHeaders(200, response.getBytes().length);
 				t.getResponseBody().write(response.getBytes());
 				t.getResponseBody().flush();
 				t.getResponseBody().close();
 			}
 		});
-		httpServer.createContext("/api/tenza/relay/set")
-				.setHandler(new HttpHandler() {
-					@Override
-					public void handle(HttpExchange t) throws IOException {
-						Quest.inst().tenzo.relay = true;
-						DatagramPacket dp = Quest.inst().tenzo.relayOpen();
-						QuestStarter.udpServer.socket.send(dp);
-						String response = "status:ok";
-						t.sendResponseHeaders(200, response.getBytes().length);
-						t.getResponseBody().write(response.getBytes());
-						t.getResponseBody().flush();
-						t.getResponseBody().close();
-					}
-				});
+		httpServer.createContext("/api/tenza/relay/set").setHandler(new HttpHandler() {
+			@Override
+			public void handle(HttpExchange t) throws IOException {
+				Quest.inst().rings.magneticLock = true;
+				DatagramPacket dp = Quest.inst().rings.relayOpen();
+				QuestStarter.udpServer.socket.send(dp);
+				String response = "status:ok";
+				t.sendResponseHeaders(200, response.getBytes().length);
+				t.getResponseBody().write(response.getBytes());
+				t.getResponseBody().flush();
+				t.getResponseBody().close();
+			}
+		});
 		Logger.inst().print("Добавлены контексты для веб-сервера", INFO);
 		httpServer.setExecutor(null);
 		httpServer.start();
