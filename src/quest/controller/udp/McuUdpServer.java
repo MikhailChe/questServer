@@ -1,5 +1,7 @@
 package quest.controller.udp;
 
+import static quest.controller.log.Logger.MsgType.WARNING;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -30,7 +32,8 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 			InetAddress addr = Inet4Address.getByAddress(address);
 			services.put(addr, function);
 		} catch (Exception e) {
-
+			Logger.inst().print("Проблемы добавления сервиса МК: "
+					+ e.getLocalizedMessage(), WARNING);
 		}
 	}
 

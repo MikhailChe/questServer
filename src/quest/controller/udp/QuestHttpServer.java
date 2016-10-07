@@ -1,5 +1,7 @@
 package quest.controller.udp;
 
+import static quest.controller.log.Logger.MsgType.INFO;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
@@ -9,7 +11,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import quest.controller.Starter;
+import quest.controller.QuestStarter;
+import quest.controller.log.Logger;
 import quest.model.Quest;
 
 public class QuestHttpServer {
@@ -38,7 +41,7 @@ public class QuestHttpServer {
 					public void handle(HttpExchange t) throws IOException {
 						Quest.inst().tenzo.relay = true;
 						DatagramPacket dp = Quest.inst().tenzo.relayOpen();
-						Starter.udpServer.socket.send(dp);
+						QuestStarter.udpServer.socket.send(dp);
 						String response = "status:ok";
 						t.sendResponseHeaders(200, response.getBytes().length);
 						t.getResponseBody().write(response.getBytes());
@@ -46,10 +49,11 @@ public class QuestHttpServer {
 						t.getResponseBody().close();
 					}
 				});
-		System.out.println("added context");
+		Logger.inst().print("Добавлены контексты для веб-сервера", INFO);
 		httpServer.setExecutor(null);
 		httpServer.start();
-		System.out.println("started");
+		Logger.inst().print("Dеб-сервер запущен и готов работать", INFO);
+
 	}
 
 }
