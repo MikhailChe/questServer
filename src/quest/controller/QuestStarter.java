@@ -8,7 +8,7 @@ import java.net.SocketException;
 import quest.controller.log.Logger;
 import quest.controller.tcp.QuestHttpServer;
 import quest.controller.udp.McuUdpServer;
-import quest.model.Quest;
+import quest.model.quest1.Quest;
 
 public class QuestStarter {
 
