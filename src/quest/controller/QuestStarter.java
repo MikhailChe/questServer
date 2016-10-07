@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.net.SocketException;
 
 import quest.controller.log.Logger;
-import quest.controller.tcp.QuestHttpServer;
-import quest.controller.udp.McuUdpServer;
+import quest.controller.net.tcp.QuestHttpServer;
+import quest.controller.net.udp.McuUdpServer;
 import quest.model.quest1.Quest;
 
 public class QuestStarter {
@@ -27,10 +27,8 @@ public class QuestStarter {
 		System.out.println("Going to start udp server");
 		try {
 			udpServer = new McuUdpServer(2016);
-			udpServer.addService(new byte[] { (byte) 192, (byte) 168, (byte) 243, 2 },
-					Quest.inst().rings::tenzoProcess);
-			udpServer.addService(new byte[] { (byte) 192, (byte) 168, (byte) 243, 3 },
-					Quest.inst().infoPaper::infoPaperProcess);
+			udpServer.addService(Quest.inst().rings, Quest.inst().rings::processInput);
+			udpServer.addService(Quest.inst().infoPaper, Quest.inst().infoPaper::infoPaperProcess);
 			new Thread(udpServer).start();
 		} catch (SocketException e) {
 			LOG.print("Не смог запустить сервер контроллеров", ERROR);

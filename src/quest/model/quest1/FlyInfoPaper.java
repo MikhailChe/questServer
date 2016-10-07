@@ -1,8 +1,15 @@
 package quest.model.quest1;
 
-import quest.model.ifaces.InputByteProcessor;
+import java.net.SocketAddress;
 
-public class FlyInfoPaper implements InputByteProcessor {
+import quest.model.common.classes.MicroUnit;
+import quest.model.common.ifaces.InputByteProcessor;
+
+public class FlyInfoPaper extends MicroUnit implements InputByteProcessor {
+	public FlyInfoPaper(SocketAddress addr) {
+		super(addr);
+	}
+
 	boolean photoresistor = false;
 	boolean magneticLock = false;
 

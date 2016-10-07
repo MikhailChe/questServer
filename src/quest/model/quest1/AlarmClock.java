@@ -1,6 +1,6 @@
 package quest.model.quest1;
 
-import quest.model.ifaces.InputByteProcessor;
+import quest.model.common.ifaces.InputByteProcessor;
 
 public class AlarmClock implements InputByteProcessor {
 	boolean clockArmed = false;

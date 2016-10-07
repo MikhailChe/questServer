@@ -1,4 +1,4 @@
-package quest.controller.tcp;
+package quest.controller.net.tcp;
 
 import static quest.controller.log.Logger.MsgType.INFO;
 
