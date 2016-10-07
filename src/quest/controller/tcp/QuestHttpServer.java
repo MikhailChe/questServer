@@ -1,4 +1,4 @@
-package quest.controller.udp;
+package quest.controller.tcp;
 
 import static quest.controller.log.Logger.MsgType.INFO;
 
