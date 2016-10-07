@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Logger {
-	static volatile Logger	instance;
+	static volatile Logger instance;
 
-	BufferedWriter			errorLog;
-	BufferedWriter			warningLog;
-	BufferedWriter			infoLog;
+	BufferedWriter errorLog;
+	BufferedWriter warningLog;
+	BufferedWriter infoLog;
 
-	boolean					toConsole	= true;
+	boolean toConsole = true;
 
 	public static Logger inst() {
 		if (instance == null) {
@@ -34,11 +34,9 @@ public class Logger {
 
 	private Logger() {
 		LocalDateTime ldt = LocalDateTime.now();
-		String dateTime = "" + ldt.getYear() + "." + ldt.getMonthValue() + "."
-				+ ldt.getDayOfMonth() + " " + ldt.getHour() + "-"
-				+ ldt.getMinute() + "-" + ldt.getSecond();
-		dateTime = ldt
-				.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH-mm-ss"));
+		String dateTime = "" + ldt.getYear() + "." + ldt.getMonthValue() + "." + ldt.getDayOfMonth() + " "
+				+ ldt.getHour() + "-" + ldt.getMinute() + "-" + ldt.getSecond();
+		dateTime = ldt.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH-mm-ss"));
 		Charset cs = StandardCharsets.UTF_8;
 
 		Path parentPath = Paths.get("log", dateTime);
@@ -52,41 +50,24 @@ public class Logger {
 		try {
 			Path errorPath = parentPath.resolve("error.log");
 
-			errorLog = Files
-					.newBufferedWriter(
-							errorPath,
-							StandardOpenOption.CREATE,
-							StandardOpenOption.APPEND);
+			this.errorLog = Files.newBufferedWriter(errorPath, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 		} catch (IOException e) {
-			System.err
-					.println("Не удалось создать файл для логгирования ошибок");
+			System.err.println("Не удалось создать файл для логгирования ошибок");
 			e.printStackTrace();
 		}
 		try {
 			Path warningPath = parentPath.resolve("warning.log");
-			warningLog = Files
-					.newBufferedWriter(
-							warningPath,
-							cs,
-							StandardOpenOption.CREATE,
-							StandardOpenOption.APPEND);
+			this.warningLog = Files.newBufferedWriter(warningPath, cs, StandardOpenOption.CREATE,
+					StandardOpenOption.APPEND);
 		} catch (IOException e) {
-			System.err
-					.println(
-							"Не удалось создать файл для логгирования предупреждений");
+			System.err.println("Не удалось создать файл для логгирования предупреждений");
 			e.printStackTrace();
 		}
 		try {
 			Path infoPath = parentPath.resolve("info.log");
-			infoLog = Files
-					.newBufferedWriter(
-							infoPath,
-							cs,
-							StandardOpenOption.CREATE,
-							StandardOpenOption.APPEND);
+			this.infoLog = Files.newBufferedWriter(infoPath, cs, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 		} catch (IOException e) {
-			System.err
-					.println("Не удалось создать файл для логгирования ошибок");
+			System.err.println("Не удалось создать файл для логгирования ошибок");
 			e.printStackTrace();
 		}
 	}
@@ -100,10 +81,11 @@ public class Logger {
 		String msgToOutput = String.format("%s:\t%s%n", dateTime, msg);
 		switch (type) {
 		case INFO:
+		default:
 			System.out.print(msgToOutput);
 			try {
-				infoLog.write(msgToOutput);
-				infoLog.flush();
+				this.infoLog.write(msgToOutput);
+				this.infoLog.flush();
 			} catch (IOException | NullPointerException e) {
 				e.printStackTrace();
 			}
@@ -111,8 +93,8 @@ public class Logger {
 		case WARNING:
 			System.err.print(msgToOutput);
 			try {
-				warningLog.write(msgToOutput);
-				warningLog.flush();
+				this.warningLog.write(msgToOutput);
+				this.warningLog.flush();
 			} catch (IOException | NullPointerException e) {
 				e.printStackTrace();
 			}
@@ -120,8 +102,8 @@ public class Logger {
 		case ERROR:
 			System.err.print(msgToOutput);
 			try {
-				errorLog.write(msgToOutput);
-				errorLog.flush();
+				this.errorLog.write(msgToOutput);
+				this.errorLog.flush();
 			} catch (IOException | NullPointerException e) {
 				e.printStackTrace();
 			}
