@@ -10,13 +10,32 @@ public class Quest {
 		return instance;
 	}
 
-	public TenzoController	tenzo		= new TenzoController();
-	public InfoPaper		infoPaper	= new InfoPaper();
+	public SportRings rings = new SportRings();
+
+	public AlarmClock alarmClock = new AlarmClock();
+
+	public StareCase starecase = new StareCase();
+
+	public Cubes cubes = new Cubes();
+
+	public ABCz abc = new ABCz();
+
+	public FlyInfoPaper infoPaper = new FlyInfoPaper();
+
+	public UvRobot robot = new UvRobot();
+
+	public LockerKnocker locker = new LockerKnocker();
+
+	public RuneAndSword sword = new RuneAndSword();
+
+	public SwordInCage cage = new SwordInCage();
+
+	public RingAndRed ringRed = new RingAndRed();
+
+	public BoogieMan boogieMan = new BoogieMan();
 
 	private Quest() {
 
 	}
 
 }
-
-
