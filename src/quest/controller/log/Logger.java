@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 
 public class Logger {
@@ -13,7 +16,7 @@ public class Logger {
 
 	BufferedWriter			errorLog;
 	BufferedWriter			warningLog;
-	BufferedWriter			messageLog;
+	BufferedWriter			infoLog;
 
 	boolean					toConsole	= true;
 
@@ -31,33 +34,53 @@ public class Logger {
 	public Logger() {
 		LocalDateTime ldt = LocalDateTime.now();
 		String dateTime = "" + ldt.getYear() + "." + ldt.getMonthValue() + "."
-				+ ldt.getDayOfMonth() + " " + ldt.getHour() + ":"
-				+ ldt.getMinute() + ":" + ldt.getSecond();
+				+ ldt.getDayOfMonth() + " " + ldt.getHour() + "-"
+				+ ldt.getMinute() + "-" + ldt.getSecond();
 		Charset cs = StandardCharsets.UTF_8;
+		Path parentPath = Paths.get("log", dateTime);
+		if (Files.notExists(parentPath, LinkOption.NOFOLLOW_LINKS)) {
+			try {
+				Files.createDirectories(parentPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		try {
+
+			Path errorPath = parentPath.resolve("error.log");
+
 			errorLog = Files
 					.newBufferedWriter(
-							Paths.get("log", dateTime, "error.log"), cs);
+							errorPath,
+							StandardOpenOption.CREATE,
+							StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			System.err
 					.println("Не удалось создать файл для логгирования ошибок");
 			e.printStackTrace();
 		}
 		try {
+			Path warningPath = parentPath.resolve("warning.log");
 			warningLog = Files
 					.newBufferedWriter(
-							Paths.get("log", dateTime, "warning.log"),
-							cs);
+							warningPath,
+							cs,
+							StandardOpenOption.CREATE,
+							StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			System.err
-					.println("Не удалось создать файл для логгирования ошибок");
+					.println(
+							"Не удалось создать файл для логгирования предупреждений");
 			e.printStackTrace();
 		}
 		try {
-			messageLog = Files
+			Path infoPath = parentPath.resolve("info.log");
+			infoLog = Files
 					.newBufferedWriter(
-							Paths.get("log", dateTime, "message.log"),
-							cs);
+							infoPath,
+							cs,
+							StandardOpenOption.CREATE,
+							StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			System.err
 					.println("Не удалось создать файл для логгирования ошибок");
@@ -66,16 +89,37 @@ public class Logger {
 	}
 
 	public enum MsgType {
-		MESSAGE, WARNING, ERROR
+		INFO, WARNING, ERROR
 	}
 
 	public void print(String msg, MsgType type) {
 		switch (type) {
-		case MESSAGE:
+		case INFO:
+			System.out.println(msg);
+			try {
+				infoLog.write(msg);
+				infoLog.flush();
+			} catch (IOException | NullPointerException e) {
+				e.printStackTrace();
+			}
 			break;
 		case WARNING:
+			System.err.println(msg);
+			try {
+				warningLog.write(msg);
+				warningLog.flush();
+			} catch (IOException | NullPointerException e) {
+				e.printStackTrace();
+			}
 			break;
 		case ERROR:
+			System.err.println(msg);
+			try {
+				errorLog.write(msg);
+				errorLog.flush();
+			} catch (IOException | NullPointerException e) {
+				e.printStackTrace();
+			}
 			break;
 		}
 	}
