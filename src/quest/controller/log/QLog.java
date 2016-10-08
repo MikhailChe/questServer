@@ -12,8 +12,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Logger {
-	static volatile Logger instance;
+public class QLog {
+	static volatile QLog instance;
 
 	BufferedWriter errorLog;
 	BufferedWriter warningLog;
@@ -21,18 +21,18 @@ public class Logger {
 
 	boolean toConsole = true;
 
-	public static Logger inst() {
+	public static QLog inst() {
 		if (instance == null) {
-			synchronized (Logger.class) {
+			synchronized (QLog.class) {
 				if (instance == null) {
-					instance = new Logger();
+					instance = new QLog();
 				}
 			}
 		}
 		return instance;
 	}
 
-	private Logger() {
+	private QLog() {
 		LocalDateTime ldt = LocalDateTime.now();
 		String dateTime = "" + ldt.getYear() + "." + ldt.getMonthValue() + "." + ldt.getDayOfMonth() + " "
 				+ ldt.getHour() + "-" + ldt.getMinute() + "-" + ldt.getSecond();

@@ -1,10 +1,11 @@
 package quest.model.quest1;
 
-import static quest.controller.log.Logger.MsgType.WARNING;
+import static quest.controller.log.QLog.MsgType.WARNING;
 
 import java.net.DatagramPacket;
+import java.util.Arrays;
 
-import quest.controller.log.Logger;
+import quest.controller.log.QLog;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.ifaces.InputByteProcessor;
 
@@ -13,11 +14,11 @@ public class SportRings extends MicroUnit implements InputByteProcessor {
 		super(null, "Спортивные кольца");
 	}
 
-	int weight = 0;
-	boolean magneticLock = false;
+	private int[] weight = { 0, 0 };
+	private boolean magneticLock = false;
 
 	public int getWeight() {
-		return this.weight;
+		return this.weight[0] + this.weight[1];
 	}
 
 	public boolean isMagneticLocked() {
@@ -25,41 +26,43 @@ public class SportRings extends MicroUnit implements InputByteProcessor {
 	}
 
 	public void lock(boolean value) {
+		DatagramPacket packet = null;
 		if (value) {
-			relayOpen();
+			packet = relayOpen();
 		} else {
-			// relayClose
+			packet = relayClose();
 		}
+		send(packet);
+
 	}
 
 	public DatagramPacket relayOpen() {
-		String response = "\"relay\":true";
-		return datagramForData(0, true, response.getBytes());
+		return datagramForData(3, true, new byte[] { (byte) 1 });
+	}
+
+	public DatagramPacket relayClose() {
+		return datagramForData(3, true, new byte[] { (byte) 0 });
 	}
 
 	@Override
 	public void processInput(byte[] data) {
 		switch (data[0]) {
-		case 0: {
-			if (data.length >= 5) {
-				int newWeight = data[1] + data[2] << 8 + data[3] << 16 + data[4] << 24;
-				this.weight = newWeight;
+		case 1:
+		case 2:
+			if (data[3] == 2) {
+				weight[data[0] - 1] = shortFromByteArray(Arrays.copyOfRange(data, 4, 4 + data[3]));
+			} else {
+				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0],
+						WARNING);
 			}
 			break;
-		}
-		case 1: {
-			if (data.length >= 2) {
-				if (data[1] == 0) {
-					this.magneticLock = false;
-				} else {
-					this.magneticLock = true;
-				}
+		case 3:
+			if (data[3] == 1) {
+				this.magneticLock = (data[4] > 0 ? true : false);
+			} else {
+				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0],
+						WARNING);
 			}
-			break;
-		}
-		default:
-			Logger.inst().print("Пришли данные, о которых мы не знаем", WARNING);
-			break;
 		}
 	}
 }

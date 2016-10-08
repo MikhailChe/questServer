@@ -1,5 +1,8 @@
 package quest.model.common.classes;
 
+import static quest.controller.log.QLog.MsgType.ERROR;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
@@ -7,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import quest.controller.QuestStarter;
+import quest.controller.log.QLog;
 import quest.model.common.ifaces.InputByteProcessor;
 
 public abstract class MicroUnit implements InputByteProcessor {
@@ -46,6 +51,18 @@ public abstract class MicroUnit implements InputByteProcessor {
 		return new DatagramPacket(outputData, outputData.length, this.innerAddress);
 	}
 
+	protected static void send(DatagramPacket p) {
+		if (QuestStarter.udpServer != null) {
+			if (QuestStarter.udpServer.socket != null) {
+				try {
+					QuestStarter.udpServer.socket.send(p);
+				} catch (IOException e) {
+					QLog.inst().print("Не получилось отправить UDP пакет:" + e.getLocalizedMessage(), ERROR);
+				}
+			}
+		}
+	}
+
 	public static List<MicroUnit> getMicrounits(Object o) {
 		Field[] fields = o.getClass().getFields();
 		List<MicroUnit> list = new ArrayList<>();
@@ -67,6 +84,14 @@ public abstract class MicroUnit implements InputByteProcessor {
 				});
 
 		return list;
+	}
+
+	public static short shortFromByteArray(byte[] arr) {
+		int a = 0;
+		for (int i = 0; i < arr.length; i++) {
+			a += Byte.toUnsignedInt(arr[i]) << (i * 8);
+		}
+		return (short) a;
 	}
 
 	public String toString() {

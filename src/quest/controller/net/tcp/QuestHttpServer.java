@@ -1,6 +1,6 @@
 package quest.controller.net.tcp;
 
-import static quest.controller.log.Logger.MsgType.INFO;
+import static quest.controller.log.QLog.MsgType.INFO;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -12,7 +12,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import quest.controller.QuestStarter;
-import quest.controller.log.Logger;
+import quest.controller.log.QLog;
 import quest.model.quest1.Quest;
 
 public class QuestHttpServer {
@@ -46,10 +46,10 @@ public class QuestHttpServer {
 				t.getResponseBody().close();
 			}
 		});
-		Logger.inst().print("Добавлены контексты для веб-сервера", INFO);
+		QLog.inst().print("Добавлены контексты для веб-сервера", INFO);
 		httpServer.setExecutor(null);
 		httpServer.start();
-		Logger.inst().print("Dеб-сервер запущен и готов работать", INFO);
+		QLog.inst().print("Dеб-сервер запущен и готов работать", INFO);
 
 	}
 

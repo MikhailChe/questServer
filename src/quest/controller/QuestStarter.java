@@ -1,12 +1,12 @@
 package quest.controller;
 
-import static quest.controller.log.Logger.MsgType.ERROR;
-import static quest.controller.log.Logger.MsgType.INFO;
+import static quest.controller.log.QLog.MsgType.ERROR;
+import static quest.controller.log.QLog.MsgType.INFO;
 
 import java.io.IOException;
 import java.net.SocketException;
 
-import quest.controller.log.Logger;
+import quest.controller.log.QLog;
 import quest.controller.net.tcp.QuestHttpServer;
 import quest.controller.net.udp.McuUdpServer;
 import quest.model.common.classes.MicroUnit;
@@ -18,7 +18,7 @@ public class QuestStarter {
 	public static McuUdpServer udpServer;
 
 	public static void main(String... strings) {
-		final Logger LOG = Logger.inst();
+		final QLog LOG = QLog.inst();
 		Quest quest = Quest.inst();
 		MicroUnit.getMicrounits(quest).forEach(a -> LOG.print(a.toString(), INFO));
 		System.exit(0);

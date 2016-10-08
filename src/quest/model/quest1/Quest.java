@@ -11,29 +11,17 @@ public class Quest {
 	}
 
 	public SportRings rings = new SportRings();
-
 	public AlarmClock alarmClock = new AlarmClock();
-
 	public StareCase starecase = new StareCase();
-
 	public Cubes cubes = new Cubes();
-
 	public ABCz abc = new ABCz();
-
 	public FlyInfoPaper infoPaper = new FlyInfoPaper();
-
 	public LockerKnocker locker = new LockerKnocker();
-
 	public RuneAndSword sword = new RuneAndSword();
-
 	public SwordInCage cage = new SwordInCage();
-
 	public RingAndRed ringRed = new RingAndRed();
-
 	public BoogieMan boogieMan = new BoogieMan();
-
 	public SnakeAndHollow snake = new SnakeAndHollow();
-
 	public CacheInMattress mattress = new CacheInMattress();
 
 	private Quest() {
