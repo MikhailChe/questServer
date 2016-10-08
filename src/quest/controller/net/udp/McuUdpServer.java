@@ -1,6 +1,6 @@
 package quest.controller.net.udp;
 
-import static quest.controller.log.Logger.MsgType.WARNING;
+import static quest.controller.log.QLog.MsgType.WARNING;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -13,8 +13,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import quest.controller.log.Logger;
-import quest.controller.log.Logger.MsgType;
+import quest.controller.log.QLog;
+import quest.controller.log.QLog.MsgType;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.ifaces.InputByteProcessor;
 
@@ -31,7 +31,7 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 		try {
 			this.services.put(mcu.getAddress(), function::processInput);
 		} catch (Exception e) {
-			Logger.inst().print("Проблемы добавления сервиса МК: " + e.getLocalizedMessage(), WARNING);
+			QLog.inst().print("Проблемы добавления сервиса МК: " + e.getLocalizedMessage(), WARNING);
 		}
 	}
 
@@ -41,13 +41,12 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 
 	@Override
 	public void run() {
-		final Logger LOG = Logger.inst();
+		final QLog LOG = QLog.inst();
 		byte[] inputBuffer = new byte[65535];
 		DatagramPacket inputPacket = new DatagramPacket(inputBuffer, inputBuffer.length);
 		while (true) {
 			try {
 				this.socket.receive(inputPacket);
-
 				Consumer<byte[]> consumer = this.services.get(inputPacket.getSocketAddress());
 				if (consumer != null) {
 					consumer.accept(Arrays.copyOf(inputPacket.getData(), inputPacket.getLength()));
