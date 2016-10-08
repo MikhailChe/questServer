@@ -35,6 +35,10 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 		}
 	}
 
+	public <T extends MicroUnit & InputByteProcessor> void addService(T mcu) {
+		addService((MicroUnit) mcu, (InputByteProcessor) mcu);
+	}
+
 	@Override
 	public void run() {
 		final Logger LOG = Logger.inst();
