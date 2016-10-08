@@ -10,6 +10,10 @@ import javax.swing.border.TitledBorder;
 import quest.model.common.classes.MicroUnit;
 
 public class SettingsPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6601252305712450698L;
 	List<MicroUnit> units;
 
 	public SettingsPanel(List<MicroUnit> units) {
@@ -25,6 +29,10 @@ public class SettingsPanel extends JPanel {
 }
 
 class SingleUnitSettings extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8405524235517656739L;
 	MicroUnit unit;
 	JTextField field = new JTextField("0.0.0.0");
 
