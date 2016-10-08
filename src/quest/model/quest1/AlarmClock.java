@@ -8,12 +8,12 @@ public class AlarmClock extends MicroUnit implements InputByteProcessor {
 		super(null, "Будильник");
 	}
 
+	boolean hall = false;
 	boolean clockArmed = false;
 	boolean magneticLock = false;
 
 	@Override
 	public void processInput(byte[] data) {
-		// TODO Auto-generated method stub
 
 	}
 }

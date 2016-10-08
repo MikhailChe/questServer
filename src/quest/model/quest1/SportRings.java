@@ -4,10 +4,10 @@ import static quest.controller.log.QLog.MsgType.INFO;
 import static quest.controller.log.QLog.MsgType.WARNING;
 
 import java.net.DatagramPacket;
-import java.util.Arrays;
 
 import quest.controller.log.QLog;
 import quest.model.common.classes.MicroUnit;
+import quest.model.common.classes.PacketData;
 import quest.model.common.ifaces.InputByteProcessor;
 
 public class SportRings extends MicroUnit implements InputByteProcessor {
@@ -18,8 +18,16 @@ public class SportRings extends MicroUnit implements InputByteProcessor {
 	private int[] weight = { 0, 0 };
 	private boolean magneticLock = false;
 
+	void setWeight(int index, int weight) {
+		this.weight[index] = weight;
+	}
+
 	public int getWeight() {
 		return this.weight[0] + this.weight[1];
+	}
+
+	void setMagneticLock(boolean value) {
+		this.magneticLock = value;
 	}
 
 	public boolean isMagneticLocked() {
@@ -47,21 +55,22 @@ public class SportRings extends MicroUnit implements InputByteProcessor {
 
 	@Override
 	public void processInput(byte[] data) {
-		switch (data[0]) {
+		PacketData pack = new PacketData(data);
+
+		switch (pack.perifiral) {
 		case 1:
 		case 2:
-			if (data[3] == 2) {
-				weight[data[0] - 1] = shortFromByteArray(Arrays.copyOfRange(data, 4, 4 + data[3]));
+			if (pack.data.length == 2) {
+				setWeight(pack.perifiral - 1, shortFromByteArray(pack.data));
 				QLog.inst().print("Устанавливаем новый вес: " + getWeight(), INFO);
 			} else {
 				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0], WARNING);
 			}
 			break;
 		case 3:
-			if (data[3] == 1) {
-				this.magneticLock = (data[4] > 0 ? true : false);
+			if (pack.data.length == 1) {
+				setMagneticLock((pack.data[0] > 0 ? true : false));
 				QLog.inst().print("Устанавливаем замок: " + isMagneticLocked(), INFO);
-
 			} else {
 				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0], WARNING);
 			}
