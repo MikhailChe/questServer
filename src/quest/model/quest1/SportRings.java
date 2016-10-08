@@ -3,16 +3,14 @@ package quest.model.quest1;
 import static quest.controller.log.Logger.MsgType.WARNING;
 
 import java.net.DatagramPacket;
-import java.net.SocketAddress;
 
 import quest.controller.log.Logger;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.ifaces.InputByteProcessor;
 
 public class SportRings extends MicroUnit implements InputByteProcessor {
-	public SportRings(SocketAddress addr) {
-		super(addr);
-
+	public SportRings() {
+		super(null, "Спортивные кольца");
 	}
 
 	int weight = 0;
