@@ -9,6 +9,7 @@ import java.net.SocketException;
 import quest.controller.log.Logger;
 import quest.controller.net.tcp.QuestHttpServer;
 import quest.controller.net.udp.McuUdpServer;
+import quest.model.common.classes.MicroUnit;
 import quest.model.quest1.Quest;
 
 public class QuestStarter {
@@ -18,7 +19,9 @@ public class QuestStarter {
 
 	public static void main(String... strings) {
 		final Logger LOG = Logger.inst();
-
+		Quest quest = Quest.inst();
+		MicroUnit.getMicrounits(quest).forEach(a -> LOG.print(a.toString(), INFO));
+		System.exit(0);
 		try {
 			httpServer = new QuestHttpServer();
 		} catch (IOException e1) {
@@ -28,8 +31,9 @@ public class QuestStarter {
 		LOG.print("Теперь запустим UDP сервер", INFO);
 		try {
 			udpServer = new McuUdpServer(2016);
-			udpServer.addService(Quest.inst().rings);
-			udpServer.addService(Quest.inst().infoPaper);
+			for (MicroUnit unit : MicroUnit.getMicrounits(quest)) {
+				udpServer.addService(unit);
+			}
 			new Thread(udpServer).start();
 		} catch (SocketException e) {
 			LOG.print("Не смог запустить сервер контроллеров", ERROR);

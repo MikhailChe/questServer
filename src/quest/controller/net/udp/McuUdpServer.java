@@ -5,7 +5,7 @@ import static quest.controller.log.Logger.MsgType.WARNING;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +21,7 @@ import quest.model.common.ifaces.InputByteProcessor;
 public class McuUdpServer implements Runnable, AutoCloseable {
 
 	public final DatagramSocket socket;
-	public final Map<SocketAddress, Consumer<byte[]>> services = Collections.synchronizedMap(new Hashtable<>());
+	public final Map<InetSocketAddress, Consumer<byte[]>> services = Collections.synchronizedMap(new Hashtable<>());
 
 	public McuUdpServer(int port) throws SocketException {
 		this.socket = new DatagramSocket(port);
@@ -47,7 +47,8 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 		while (true) {
 			try {
 				this.socket.receive(inputPacket);
-				Consumer<byte[]> consumer = this.services.get(inputPacket.getAddress());
+
+				Consumer<byte[]> consumer = this.services.get(inputPacket.getSocketAddress());
 				if (consumer != null) {
 					consumer.accept(Arrays.copyOf(inputPacket.getData(), inputPacket.getLength()));
 				}

@@ -1,7 +1,5 @@
 package quest.model.quest1;
 
-import quest.controller.net.Addresser;
-
 public class Quest {
 	private static Quest instance;
 
@@ -12,7 +10,7 @@ public class Quest {
 		return instance;
 	}
 
-	public SportRings rings = new SportRings(Addresser.getSocketAddress("192.168.243.2", 49));
+	public SportRings rings = new SportRings();
 
 	public AlarmClock alarmClock = new AlarmClock();
 
@@ -22,9 +20,7 @@ public class Quest {
 
 	public ABCz abc = new ABCz();
 
-	public FlyInfoPaper infoPaper = new FlyInfoPaper(Addresser.getSocketAddress("192.168.243.3", 49));
-
-	public UvRobot robot = new UvRobot();
+	public FlyInfoPaper infoPaper = new FlyInfoPaper();
 
 	public LockerKnocker locker = new LockerKnocker();
 
@@ -35,6 +31,10 @@ public class Quest {
 	public RingAndRed ringRed = new RingAndRed();
 
 	public BoogieMan boogieMan = new BoogieMan();
+
+	public SnakeAndHollow snake = new SnakeAndHollow();
+
+	public CacheInMattress mattress = new CacheInMattress();
 
 	private Quest() {
 
