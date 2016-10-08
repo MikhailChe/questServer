@@ -31,6 +31,10 @@ public abstract class MicroUnit implements InputByteProcessor {
 		this.innerAddress = addr;
 	}
 
+	public void initialize() {
+		send(datagramForData(0, false, new byte[] {}));
+	}
+
 	public InetSocketAddress getAddress() {
 		return this.innerAddress;
 	}
@@ -40,14 +44,7 @@ public abstract class MicroUnit implements InputByteProcessor {
 	}
 
 	protected DatagramPacket datagramForData(int perifiral, boolean write, byte[] data) {
-		byte[] outputData = new byte[data.length + 4];
-		outputData[0] = (byte) perifiral;
-		outputData[1] = (byte) (write ? 1 : 0);
-		outputData[3] = (byte) data.length;
-		for (int i = 4; i < outputData.length; i++) {
-			outputData[i] = data[i - 4];
-		}
-
+		byte[] outputData = new PacketData((byte) perifiral, write, data).getBytes();
 		return new DatagramPacket(outputData, outputData.length, this.innerAddress);
 	}
 
