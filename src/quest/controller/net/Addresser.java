@@ -4,13 +4,12 @@ import static quest.controller.log.QLog.MsgType.ERROR;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 
 import quest.controller.log.QLog;
 
 public class Addresser {
-	public static SocketAddress getSocketAddress(String ip, int port) {
+	public static InetSocketAddress getSocketAddress(String ip, int port) {
 		InetAddress address;
 		try {
 			address = InetAddress.getByName(ip);

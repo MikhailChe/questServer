@@ -1,5 +1,6 @@
 package quest.model.quest1;
 
+import static quest.controller.log.QLog.MsgType.INFO;
 import static quest.controller.log.QLog.MsgType.WARNING;
 
 import java.net.DatagramPacket;
@@ -51,17 +52,18 @@ public class SportRings extends MicroUnit implements InputByteProcessor {
 		case 2:
 			if (data[3] == 2) {
 				weight[data[0] - 1] = shortFromByteArray(Arrays.copyOfRange(data, 4, 4 + data[3]));
+				QLog.inst().print("Устанавливаем новый вес: " + getWeight(), INFO);
 			} else {
-				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0],
-						WARNING);
+				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0], WARNING);
 			}
 			break;
 		case 3:
 			if (data[3] == 1) {
 				this.magneticLock = (data[4] > 0 ? true : false);
+				QLog.inst().print("Устанавливаем замок: " + isMagneticLocked(), INFO);
+
 			} else {
-				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0],
-						WARNING);
+				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0], WARNING);
 			}
 		}
 	}
