@@ -1,6 +1,7 @@
 package quest.controller;
 
 import static quest.controller.log.Logger.MsgType.ERROR;
+import static quest.controller.log.Logger.MsgType.INFO;
 
 import java.io.IOException;
 import java.net.SocketException;
@@ -24,11 +25,11 @@ public class QuestStarter {
 			LOG.print("Не смог запустить веб-сервер. " + e1.getLocalizedMessage(), ERROR);
 			return;
 		}
-		System.out.println("Going to start udp server");
+		LOG.print("Теперь запустим UDP сервер", INFO);
 		try {
 			udpServer = new McuUdpServer(2016);
-			udpServer.addService(Quest.inst().rings, Quest.inst().rings::processInput);
-			udpServer.addService(Quest.inst().infoPaper, Quest.inst().infoPaper::infoPaperProcess);
+			udpServer.addService(Quest.inst().rings);
+			udpServer.addService(Quest.inst().infoPaper);
 			new Thread(udpServer).start();
 		} catch (SocketException e) {
 			LOG.print("Не смог запустить сервер контроллеров", ERROR);
