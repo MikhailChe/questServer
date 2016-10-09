@@ -2,6 +2,8 @@ package quest.model.common.classes;
 
 import static quest.controller.log.QLog.MsgType.ERROR;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.DatagramPacket;
@@ -25,12 +27,16 @@ import quest.model.common.ifaces.InputByteProcessor;
 @XmlAccessorType(XmlAccessType.NONE)
 public class MicroUnit implements InputByteProcessor {
 	@XmlElement
-	private String name;
+	String name;
 	@XmlElement
 	@XmlJavaTypeAdapter(value = InetSocketAddressXmlAdapter.class)
-	private InetSocketAddress innerAddress;
+	InetSocketAddress innerAddress;
 	@XmlElement
 	public List<Property> property = new ArrayList<>();
+
+	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+	List<PropertyChangeListener> listeners = new ArrayList<>();
 
 	public MicroUnit() {
 		this(null, "Микроконторллер");
@@ -42,24 +48,42 @@ public class MicroUnit implements InputByteProcessor {
 
 	}
 
-	public void setAddress(InetSocketAddress addr) {
-		this.innerAddress = addr;
-	}
-
 	public void initialize() {
 		send(datagramForData(0, false, new byte[] {}));
 	}
 
-	public InetSocketAddress getAddress() {
-		return this.innerAddress;
+	public String getName() {
+		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getName() {
-		return this.name;
+	public InetSocketAddress getAddress() {
+		return this.innerAddress;
+	}
+
+	public void setAddress(InetSocketAddress addr) {
+		this.innerAddress = addr;
+	}
+
+	public String getFieldName(int address) {
+		for (Property field : property) {
+			if (field.address == address) {
+				return field.getName();
+			}
+		}
+		return null;
+	}
+
+	public Object getField(int address) {
+		for (Property field : property) {
+			if (field.address == address) {
+				return field.getValue();
+			}
+		}
+		return null;
 	}
 
 	public void setField(int address, Object val) {
@@ -70,16 +94,36 @@ public class MicroUnit implements InputByteProcessor {
 		}
 	}
 
+	public void updateField(int address, Object newValue) {
+		Object oldValue = getField(address);
+		setField(address, newValue);
+		pcs.firePropertyChange(getFieldName(address), oldValue, newValue);
+	}
+
 	public void setField(int address, byte[] val) {
 		for (Property field : property) {
 			if (field.address == address) {
+				System.out.println("Setting value");
 				field.setValue(val);
 			}
 		}
 	}
 
-	public void updateField(int address, Object val) {
+	public void updateField(int address, byte[] val) {
+		System.out.println(this.getName() + " update " + address);
 		setField(address, val);
+	}
+
+	public void requestRemoteUpdate(int address, boolean o) {
+		send(datagramForData(address, true, o));
+	}
+
+	public void requestRemoteUpdate(int address, byte o) {
+		send(datagramForData(address, true, o));
+	}
+
+	public void requestRemoteUpdate(int address, short o) {
+		send(datagramForData(address, true, o));
 	}
 
 	protected DatagramPacket datagramForData(int perifiral, boolean write, byte[] data) {
@@ -115,9 +159,12 @@ public class MicroUnit implements InputByteProcessor {
 	public void processInput(byte[] data) {
 		PacketData pack = new PacketData(data);
 		if (pack.data.length > 0) {
-			this.setField(pack.perifiral, data);
-			// TODO: Do somethind with it!!
+			this.updateField(pack.perifiral, pack.data);
 		}
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.addPropertyChangeListener(pcl);
 	}
 
 	protected static void send(DatagramPacket p) {
