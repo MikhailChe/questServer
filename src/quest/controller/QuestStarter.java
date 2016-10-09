@@ -3,16 +3,18 @@ package quest.controller;
 import static quest.controller.log.QLog.MsgType.ERROR;
 import static quest.controller.log.QLog.MsgType.INFO;
 
-import java.net.InetSocketAddress;
+import java.io.File;
 import java.net.SocketException;
-import java.util.Scanner;
+
+import javax.xml.bind.JAXB;
 
 import quest.controller.log.QLog;
 import quest.controller.net.Addresser;
 import quest.controller.net.tcp.QuestHttpServer;
 import quest.controller.net.udp.McuUdpServer;
 import quest.model.common.classes.MicroUnit;
-import quest.model.quest1.TestingStructure;
+import quest.model.common.classes.fields.Property;
+import quest.model.quest1.QuestXML;
 
 public class QuestStarter {
 
@@ -21,59 +23,46 @@ public class QuestStarter {
 
 	public static void main(String... strings) {
 
+		QuestXML quest = new QuestXML();
+		MicroUnit unit = new MicroUnit();
+		unit.setAddress(Addresser.getSocketAddress("192.168.243.7", 1024));
+		unit.property.add(new Property((byte) 1, "Имечко1", Boolean.class, true));
+		unit.property.add(new Property((byte) 2, "Имечко2", Short.class, true));
+		unit.property.get(0).setValue(new byte[] { 0 });
+		unit.property.get(1).setValue(new byte[] { (byte) 255, (byte) 128 });
+		unit.setName("Hello");
+		quest.units.add(unit);
+		quest.units.add(unit);
+		JAXB.marshal(quest, new File("quest.xml"));
+
+		QuestXML quester = JAXB.unmarshal(new File("quest.xml"), QuestXML.class);
+
+		quester.units.forEach(System.out::println);
+
+	}
+
+	public static void main2(String... strings) {
+
 		final QLog LOG = QLog.inst();
 		if (strings.length != 2) {
 			LOG.print("Для запуска нужны 2 параметра: IP адрес устройства и порт", ERROR);
 			return;
 		}
-		int port = 0;
-		try {
-			port = Integer.parseInt(strings[1]);
-		} catch (Exception e) {
-			LOG.print("Порт какой-то неправильный. Не удалось преобразовать его в число", ERROR);
-			return;
-		}
 
-		InetSocketAddress addr = null;
-		if ((addr = Addresser.getSocketAddress(strings[0], port)) == null) {
-			LOG.print("Это не адрес. Это какая-то ерунда.", ERROR);
-			return;
-		}
-
-		TestingStructure quest = new TestingStructure();
-		quest.rings.setAddress(addr);
+		QuestXML quest = JAXB.unmarshal(new File("quest.xml"), QuestXML.class);
 
 		LOG.print("Теперь запустим UDP сервер", INFO);
 		try {
 			udpServer = new McuUdpServer(2016);
-			for (MicroUnit unit : MicroUnit.getMicrounits(quest)) {
+			for (MicroUnit unit : quest.units) {
 				udpServer.addService(unit);
-				unit.initialize();
 			}
 			new Thread(udpServer).start();
 		} catch (SocketException e) {
 			LOG.print("Не смог запустить сервер контроллеров", ERROR);
 		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		for (MicroUnit unit : quest.units) {
+			unit.initialize();
 		}
-		try (Scanner scanner = new Scanner(System.in);) {
-			for (int i = 0; i < 10; i++) {
-				System.out.println("Введите булевое значение для замка:");
-				quest.rings.lock(getBoolean(scanner));
-			}
-		}
-		System.exit(0);
 	}
-
-	public static boolean getBoolean(Scanner s) {
-		while (!s.hasNextBoolean()) {
-			System.err.print("Нужно булевое значение: ");
-			s.nextLine();
-		}
-		return s.nextBoolean();
-	}
-
 }
