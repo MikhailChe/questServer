@@ -3,7 +3,7 @@ package quest.controller;
 import static quest.controller.log.QLog.MsgType.ERROR;
 import static quest.controller.log.QLog.MsgType.INFO;
 
-import java.io.File;
+import java.io.InputStream;
 import java.net.SocketException;
 import java.util.List;
 
@@ -25,8 +25,10 @@ public class QuestStarter {
 	public static void main(String... strings) {
 		final QLog LOG = QLog.inst();
 		QuestXML quest = null;
+
 		try {
-			quest = JAXB.unmarshal(new File("quest.xml"), QuestXML.class);
+			InputStream stream = QuestStarter.class.getResourceAsStream("quest.xml");
+			quest = JAXB.unmarshal(stream, QuestXML.class);
 			LOG.print("Конфигурация квеста " + quest + " загружена.", INFO);
 		} catch (Exception e) {
 			LOG.print(e.getLocalizedMessage(), ERROR);
