@@ -2,6 +2,7 @@ package quest.view;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -15,7 +16,10 @@ public class Mainframe {
 	}
 
 	public void setContentPane(JPanel panel) {
-		this.frame.setContentPane(panel);
+
+		JScrollPane pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		this.frame.setContentPane(pane);
 	}
 
 	public void showMe() {
