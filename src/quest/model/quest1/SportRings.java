@@ -57,22 +57,26 @@ public class SportRings extends MicroUnit implements InputByteProcessor {
 	public void processInput(byte[] data) {
 		PacketData pack = new PacketData(data);
 
-		switch (pack.perifiral) {
-		case 1:
-		case 2:
-			if (pack.data.length == 2) {
-				setWeight(pack.perifiral - 1, shortFromByteArray(pack.data));
-				QLog.inst().print("Устанавливаем новый вес: " + getWeight(), INFO);
-			} else {
-				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0], WARNING);
-			}
-			break;
-		case 3:
-			if (pack.data.length == 1) {
-				setMagneticLock((pack.data[0] > 0 ? true : false));
-				QLog.inst().print("Устанавливаем замок: " + isMagneticLocked(), INFO);
-			} else {
-				QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0], WARNING);
+		if (pack.data.length > 0) {
+			switch (pack.perifiral) {
+			case 1:
+			case 2:
+				if (pack.data.length == 2) {
+					setWeight(pack.perifiral - 1, shortFromByteArray(pack.data));
+					QLog.inst().print("Устанавливаем новый вес: " + getWeight(), INFO);
+				} else {
+					QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0],
+							WARNING);
+				}
+				break;
+			case 3:
+				if (pack.data.length == 1) {
+					setMagneticLock(boolFromByteArray(pack.data));
+					QLog.inst().print("Устанавливаем замок: " + isMagneticLocked(), INFO);
+				} else {
+					QLog.inst().print("Пришли данные неверной длины: " + this.getName() + ", перефирия" + data[0],
+							WARNING);
+				}
 			}
 		}
 	}
