@@ -10,7 +10,6 @@ public class Quest {
 		return instance;
 	}
 
-	public SportRings rings = new SportRings();
 	public AlarmClock alarmClock = new AlarmClock();
 	public StareCase starecase = new StareCase();
 	public Cubes cubes = new Cubes();
