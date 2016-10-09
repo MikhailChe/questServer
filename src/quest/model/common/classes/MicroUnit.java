@@ -132,6 +132,7 @@ public class MicroUnit implements InputByteProcessor {
 		}
 	}
 
+	@Deprecated
 	public static List<MicroUnit> getMicrounits(Object o) {
 		Field[] fields = o.getClass().getFields();
 		List<MicroUnit> list = new ArrayList<>();
@@ -140,10 +141,8 @@ public class MicroUnit implements InputByteProcessor {
 				.filter(f -> InputByteProcessor.class.isAssignableFrom(f.getType())).map(f -> {
 					try {
 						return f.get(o);
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+					} catch (IllegalAccessException | IllegalArgumentException e) {
+						QLog.inst().print(e.getLocalizedMessage(), ERROR);
 					}
 					return null;
 				}).forEach(a -> {
