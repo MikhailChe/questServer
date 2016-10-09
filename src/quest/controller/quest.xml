@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<questXML name="Фантазёры">
+    <MCUs>
+        <units>
+            <name>Cпортивные кольца</name>
+            <innerAddress>192.168.243.1:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Тензодатчик 1</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Тензодатчик 2</name>
+                 <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>3</address>
+                <name>Электромагнитный замок</name>
+                 <type>java.lang.Boolean</type>
+                <editable>true</editable>
+            </property>
+        </units>
+        <units>
+            <name>Будильник</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Датчик Холла</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Сигнал будильника</name>
+                 <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>3</address>
+                <name>Электромагнитный замок</name>
+                 <type>java.lang.Boolean</type>
+                <editable>true</editable>
+            </property>
+        </units>
+        <units>
+            <name>Ступени лестницы</name>
+            <innerAddress>192.168.243.3:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Ступень 1</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Ступень 2</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>3</address>
+                <name>Ступень 3</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>4</address>
+                <name>Ступень 4</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>5</address>
+                <name>Датчик приближения</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>6</address>
+                <name>Электромагнитный замок</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+            </property>
+        </units>
+        <units>
+            <name>Кубики</name>
+            <innerAddress>192.168.243.4:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Кубик 1</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Кубик 2</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>3</address>
+                <name>Кубик 3</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>4</address>
+                <name>Кубик 4</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>5</address>
+                <name>Кубик 5</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>6</address>
+                <name>Кубик 6</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>7</address>
+                <name>Кубик 7</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>8</address>
+                <name>Кубик 8</name>
+                <type>java.lang.Short</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>9</address>
+                <name>Светодиоды</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+            </property>
+        </units>
+    </MCUs>
+</questXML>
