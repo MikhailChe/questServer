@@ -42,7 +42,8 @@ public class PacketData {
 	public PacketData(byte[] data) {
 		perifiral = data[0];
 		write = data[1] != 0 ? true : false;
-		this.data = Arrays.copyOfRange(data, 4, data.length + 4);
+		short dataLength = data[3];
+		this.data = Arrays.copyOfRange(data, 4, 4 + dataLength);
 	}
 
 	public byte[] getBytes() {
