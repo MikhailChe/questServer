@@ -15,7 +15,7 @@ public class Property implements Comparable<Property> {
 	@XmlElement
 	String name;
 	@XmlElement
-	private Object val;
+	volatile private Object val;
 	@XmlElement
 	Class<?> type = Object.class;
 	@XmlElement
@@ -81,10 +81,10 @@ public class Property implements Comparable<Property> {
 				Short shortval = (short) (Byte.toUnsignedInt(array[0]) + (Byte.toUnsignedInt(array[1]) << 8));
 				this.val = shortval;
 			} else {
-				throw new IllegalArgumentException("Указанный тип данных не поддерживается");
+				QLog.inst().print("Тип данных поля не поддерживается.", WARNING);
 			}
 		} else {
-			throw new IllegalArgumentException("Массив не содержит данные");
+			QLog.inst().print("Массив не содержит данные", WARNING);
 		}
 	}
 

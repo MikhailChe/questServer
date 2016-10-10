@@ -43,13 +43,13 @@ public class QLog {
 		if (Files.notExists(parentPath, LinkOption.NOFOLLOW_LINKS)) {
 			try {
 				Files.createDirectories(parentPath);
+				System.out.println("Создал диекрторию " + parentPath.toAbsolutePath().toString());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		try {
 			Path errorPath = parentPath.resolve("error.log");
-
 			this.errorLog = Files.newBufferedWriter(errorPath, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			System.err.println("Не удалось создать файл для логгирования ошибок");
@@ -70,10 +70,6 @@ public class QLog {
 			System.err.println("Не удалось создать файл для логгирования ошибок");
 			e.printStackTrace();
 		}
-	}
-
-	public enum MsgType {
-		INFO, WARNING, ERROR
 	}
 
 	public void print(String msg, MsgType type) {
@@ -109,5 +105,9 @@ public class QLog {
 			}
 			break;
 		}
+	}
+
+	public enum MsgType {
+		INFO, WARNING, ERROR
 	}
 }

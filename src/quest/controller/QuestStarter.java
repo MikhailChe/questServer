@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.net.SocketException;
 import java.util.List;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.bind.JAXB;
 
 import quest.controller.log.QLog;
@@ -23,6 +25,13 @@ public class QuestStarter {
 	public static McuUdpServer udpServer;
 
 	public static void main(String... strings) {
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+		}
+
 		final QLog LOG = QLog.inst();
 		QuestXML quest = null;
 
@@ -31,9 +40,11 @@ public class QuestStarter {
 			quest = JAXB.unmarshal(stream, QuestXML.class);
 			LOG.print("Конфигурация квеста " + quest + " загружена.", INFO);
 		} catch (Exception e) {
-			LOG.print(e.getLocalizedMessage(), ERROR);
+			LOG.print("Не смог загрузить конфигурацию квеста: " + e.getLocalizedMessage(), ERROR);
+
 			return;
 		}
+
 		LOG.print("Теперь запустим UDP сервер", INFO);
 		try {
 			udpServer = new McuUdpServer(2016);
@@ -42,7 +53,7 @@ public class QuestStarter {
 			}
 			new Thread(udpServer).start();
 		} catch (SocketException e) {
-			LOG.print("Не смог запустить сервер контроллеров", ERROR);
+			LOG.print("Не смог запустить сервер контроллеров" + e.getLocalizedMessage(), ERROR);
 		}
 		Mainframe frame = new Mainframe(quest.toString());
 		frame.setContentPane(new MCULists(quest.units));

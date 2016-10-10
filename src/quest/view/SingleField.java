@@ -40,35 +40,21 @@ public class SingleField extends JPanel {
 				cb.setSelected(!cb.isSelected());
 			});
 			comp = cb;
-			new Thread(() -> {
-				while (true) {
-					if (prop.getValue() != null)
-						if (prop.getValue() instanceof Boolean)
-							cb.setSelected((boolean) prop.getValue());
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
+			unit.addPropertyChangeListener((e) -> {
+				if (prop.getValue() != null)
+					if (prop.getValue() instanceof Boolean)
+						cb.setSelected((boolean) prop.getValue());
+			});
 		} else if (type.equals(Short.class)) {
 			JFormattedTextField ftxt = new JFormattedTextField(NumberFormat.getIntegerInstance());
 			ftxt.setColumns(10);
 			comp = ftxt;
-			new Thread(() -> {
-				while (true) {
-					if (prop.getValue() != null) {
-						if (prop.getValue() instanceof Short)
-							ftxt.setText("" + (short) prop.getValue());
-					}
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+			unit.addPropertyChangeListener((e) -> {
+				if (prop.getValue() != null) {
+					if (prop.getValue() instanceof Short)
+						ftxt.setText("" + (short) prop.getValue());
 				}
-			}).start();
+			});
 		}
 		if (comp != null) {
 			comp.setEnabled(prop.isEditable());
