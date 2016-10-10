@@ -50,9 +50,17 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 		while (true) {
 			try {
 				this.socket.receive(inputPacket);
+				LOG.print("Пришел пакет от " + inputPacket.getSocketAddress() + ", размер " + inputPacket.getLength()
+						+ "б", INFO);
 				Consumer<byte[]> consumer = this.services.get(inputPacket.getSocketAddress());
 				if (consumer != null) {
+					LOG.print("Знаю кому передать пакет, всё нормально", INFO);
 					consumer.accept(Arrays.copyOf(inputPacket.getData(), inputPacket.getLength()));
+				} else {
+					LOG.print(
+							"Пакет, пришедший от " + inputPacket.getSocketAddress()
+									+ " никому не принадлежит. Возможно атака на сервер, а возможно просто неверная конфигурация квеста.",
+							WARNING);
 				}
 			} catch (IOException e) {
 				LOG.print(("Не смог поулчить UDP сообщение: " + e.getLocalizedMessage()), MsgType.ERROR);
