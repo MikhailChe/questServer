@@ -11,7 +11,7 @@ import quest.model.common.classes.PacketData;
 public class QuestMock {
 	public static void main(String[] args) {
 		try (DatagramSocket datagramSocket = new DatagramSocket(1024);) {
-			byte[] data = new PacketData((byte) 3, false, 0).getBytes();
+			byte[] data = new PacketData((byte) 1, false, -1024).getBytes();
 			try {
 				datagramSocket
 						.send(new DatagramPacket(data, data.length, Addresser.getSocketAddress("127.0.0.1", 2016)));

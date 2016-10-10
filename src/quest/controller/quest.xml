@@ -3,7 +3,7 @@
     <MCUs>
         <units>
             <name>Cпортивные кольца</name>
-            <innerAddress>192.168.243.1:1024</innerAddress>
+            <innerAddress>127.0.0.1:1024</innerAddress>
             <property>
                 <address>1</address>
                 <name>Тензодатчик 1</name>

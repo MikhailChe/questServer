@@ -158,8 +158,14 @@ public class MicroUnit implements InputByteProcessor {
 	public void processInput(byte[] data) {
 		PacketData pack = new PacketData(data);
 		QLog.inst().print("Пришли новые данные для " + this.getName(), INFO);
-		if (pack.data.length > 0) {
+		if (pack.perifiral == 0) {
+			// this.initialize();
+			// TODO: Особый случай. Принудительная инициализация
+			// микроконтроллера по запросу от самого микроконтроллера
+		} else if (pack.data.length > 0) {
+			Object old = this.getField(pack.perifiral);
 			this.updateField(pack.perifiral, pack.data);
+			pcs.firePropertyChange(this.getFieldName(pack.perifiral), old, this.getField(pack.perifiral));
 		}
 	}
 
