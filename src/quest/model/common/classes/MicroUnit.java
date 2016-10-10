@@ -1,6 +1,7 @@
 package quest.model.common.classes;
 
 import static quest.controller.log.QLog.MsgType.ERROR;
+import static quest.controller.log.QLog.MsgType.INFO;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -158,6 +159,7 @@ public class MicroUnit implements InputByteProcessor {
 	@Override
 	public void processInput(byte[] data) {
 		PacketData pack = new PacketData(data);
+		QLog.inst().print("Пришли новые данные для " + this.getName(), INFO);
 		if (pack.data.length > 0) {
 			this.updateField(pack.perifiral, pack.data);
 		}
@@ -199,20 +201,6 @@ public class MicroUnit implements InputByteProcessor {
 				});
 
 		return list;
-	}
-
-	@Deprecated
-	public static short shortFromByteArray(byte[] arr) {
-		int a = 0;
-		for (int i = 0; i < arr.length; i++) {
-			a += Byte.toUnsignedInt(arr[i]) << (i * 8);
-		}
-		return (short) a;
-	}
-
-	@Deprecated
-	public static boolean boolFromByteArray(byte[] arr) {
-		return arr[0] != 0 ? true : false;
 	}
 
 	static class InetSocketAddressXmlAdapter extends XmlAdapter<String, InetSocketAddress> {
