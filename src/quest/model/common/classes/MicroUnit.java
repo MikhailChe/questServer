@@ -6,11 +6,9 @@ import static quest.controller.log.QLog.MsgType.INFO;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -50,6 +48,7 @@ public class MicroUnit implements InputByteProcessor {
 	}
 
 	public void initialize() {
+		QLog.inst().print("Запрос данных от микроконтроллера " + this.getName() + " " + this.getAddress(), INFO);
 		send(datagramForData(0, false, new byte[] {}));
 	}
 
@@ -104,14 +103,13 @@ public class MicroUnit implements InputByteProcessor {
 	public void setField(int address, byte[] val) {
 		for (Property field : property) {
 			if (field.address == address) {
-				System.out.println("Setting value");
 				field.setValue(val);
 			}
 		}
 	}
 
 	public void updateField(int address, byte[] val) {
-		System.out.println(this.getName() + " update " + address);
+		QLog.inst().print("Обновляю данные " + this.getName() + ":" + address, INFO);
 		setField(address, val);
 	}
 
@@ -174,33 +172,12 @@ public class MicroUnit implements InputByteProcessor {
 			if (QuestStarter.udpServer.socket != null) {
 				try {
 					QuestStarter.udpServer.socket.send(p);
+					QLog.inst().print("Отправлен UDP: " + p.getSocketAddress(), INFO);
 				} catch (IOException e) {
 					QLog.inst().print("Не получилось отправить UDP пакет:" + e.getLocalizedMessage(), ERROR);
 				}
 			}
 		}
-	}
-
-	@Deprecated
-	public static List<MicroUnit> getMicrounits(Object o) {
-		Field[] fields = o.getClass().getFields();
-		List<MicroUnit> list = new ArrayList<>();
-
-		Arrays.asList(fields).stream().filter(f -> MicroUnit.class.isAssignableFrom(f.getType()))
-				.filter(f -> InputByteProcessor.class.isAssignableFrom(f.getType())).map(f -> {
-					try {
-						return f.get(o);
-					} catch (IllegalAccessException | IllegalArgumentException e) {
-						QLog.inst().print(e.getLocalizedMessage(), ERROR);
-					}
-					return null;
-				}).forEach(a -> {
-					if (a instanceof MicroUnit) {
-						list.add((MicroUnit) a);
-					}
-				});
-
-		return list;
 	}
 
 	static class InetSocketAddressXmlAdapter extends XmlAdapter<String, InetSocketAddress> {
