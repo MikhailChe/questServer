@@ -3,6 +3,7 @@ package quest.controller;
 import static quest.controller.log.QLog.MsgType.ERROR;
 import static quest.controller.log.QLog.MsgType.INFO;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
 import java.util.List;
@@ -35,14 +36,20 @@ public class QuestStarter {
 		final QLog LOG = QLog.inst();
 		QuestXML quest = null;
 
-		try {
-			InputStream stream = QuestStarter.class.getResourceAsStream("quest.xml");
+		try (InputStream stream = QuestStarter.class.getResourceAsStream("quest.xml");) {
 			quest = JAXB.unmarshal(stream, QuestXML.class);
 			LOG.print("Конфигурация квеста " + quest + " загружена.", INFO);
 		} catch (Exception e) {
 			LOG.print("Не смог загрузить конфигурацию квеста: " + e.getLocalizedMessage(), ERROR);
 
 			return;
+		}
+
+		try {
+			QuestHttpServer httpServer = new QuestHttpServer(quest);
+			httpServer.start();
+		} catch (IOException e1) {
+			QLog.inst().print(e1.getLocalizedMessage(), ERROR);
 		}
 
 		LOG.print("Теперь запустим UDP сервер", INFO);
