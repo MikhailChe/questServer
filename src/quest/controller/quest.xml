@@ -2,7 +2,7 @@
 <questXML name="Фантазёры">
     <MCUs>
         <units>
-            <name>Cпортивные кольца</name>
+            <name>Спортивные кольца</name>
             <innerAddress>127.0.0.1:1024</innerAddress>
             <property>
                 <address>1</address>
