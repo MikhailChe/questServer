@@ -22,14 +22,14 @@ public class MCULists extends JPanel implements Scrollable {
 		this.units = units;
 		for (MicroUnit unit : units) {
 			SingleMicroUnit smu = new SingleMicroUnit(unit);
-			guiUnits.add(smu);
+			this.guiUnits.add(smu);
 		}
 		SwingUtilities.invokeLater(this::initAndShowGUI);
 		validate();
 	}
 
 	public void initAndShowGUI() {
-		for (SingleMicroUnit smu : guiUnits) {
+		for (SingleMicroUnit smu : this.guiUnits) {
 			add(smu);
 		}
 		validate();

@@ -58,7 +58,7 @@ public class QuestHttpServer {
 						return new ArrayList<>();
 					});
 				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
+					QLog.inst().print("Неудачная попытка кодирования декодирования данных от клиента.", WARNING);
 				}
 			} else if (keyval.length == 2) {
 				String key = keyval[0];
@@ -86,10 +86,9 @@ public class QuestHttpServer {
 	}
 
 	private HttpServer httpServer;
-	private QuestXML quest;
 
 	public QuestHttpServer(QuestXML quest) throws UnknownHostException, IOException {
-		this.quest = quest;
+
 		this.httpServer = HttpServer.create(new InetSocketAddress(80), 0);
 		this.httpServer.createContext("/", new ProHandler() {
 			@Override
@@ -112,8 +111,7 @@ public class QuestHttpServer {
 						try {
 							probe = Files.probeContentType(Paths.get(checkPath));
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							QLog.inst().print("Не смог получить MIME тип файла.", WARNING);
 						}
 						if (probe.contains("text")) {
 							probe += "; charset=utf-8";
@@ -129,7 +127,6 @@ public class QuestHttpServer {
 						t.getResponseBody().write(buf);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
 					QLog.inst().print("404 страница не найдена: " + e.getClass().getSimpleName(), WARNING);
 					t.getResponseHeaders().add("Content-type", "text/html; charset=utf-8");
 					String response404 = "404 (страница не найдена)";
@@ -174,7 +171,7 @@ public class QuestHttpServer {
 			try {
 				unitName = new URI(unit.getName().replaceAll(" ", "%20")).getPath();
 			} catch (URISyntaxException e) {
-				e.printStackTrace();
+				QLog.inst().print("Пытался преобразовать пробел в %20, но ничего не получилось.", WARNING);
 			}
 			System.out.println(unitName);
 			this.httpServer.createContext("/api/" + unitName, new ProHandler() {

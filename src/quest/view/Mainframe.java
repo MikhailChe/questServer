@@ -1,8 +1,11 @@
 package quest.view;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -11,14 +14,15 @@ public class Mainframe {
 	private JFrame frame;
 
 	public Mainframe(String str) {
-		frame = new JFrame("Квест");
+		this.frame = new JFrame("Квест");
 		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.frame.setPreferredSize(new Dimension(800, 600));
 	}
 
 	public void setContentPane(JPanel panel) {
 
-		JScrollPane pane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane pane = new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		this.frame.setContentPane(pane);
 	}
 

@@ -69,7 +69,7 @@ public class MicroUnit implements InputByteProcessor {
 	}
 
 	public String getFieldName(int address) {
-		for (Property field : property) {
+		for (Property field : this.property) {
 			if (field.address == address) {
 				return field.getName();
 			}
@@ -78,7 +78,7 @@ public class MicroUnit implements InputByteProcessor {
 	}
 
 	public Object getField(int address) {
-		for (Property field : property) {
+		for (Property field : this.property) {
 			if (field.address == address) {
 				return field.getValue();
 			}
@@ -87,7 +87,7 @@ public class MicroUnit implements InputByteProcessor {
 	}
 
 	public void setField(int address, Object val) {
-		for (Property field : property) {
+		for (Property field : this.property) {
 			if (field.address == address) {
 				field.setValue(val);
 			}
@@ -95,13 +95,13 @@ public class MicroUnit implements InputByteProcessor {
 	}
 
 	public void updateField(int address, Object newValue) {
-		Object oldValue = getField(address);
+		// Object oldValue = getField(address);
 		setField(address, newValue);
-		pcs.firePropertyChange(getFieldName(address), oldValue, newValue);
+		this.pcs.firePropertyChange(getFieldName(address), null, newValue);
 	}
 
 	public void setField(int address, byte[] val) {
-		for (Property field : property) {
+		for (Property field : this.property) {
 			if (field.address == address) {
 				field.setValue(val);
 			}
@@ -150,6 +150,7 @@ public class MicroUnit implements InputByteProcessor {
 		return new DatagramPacket(outputData, outputData.length, this.innerAddress);
 	}
 
+	@Override
 	public String toString() {
 		return String.format("%-20s\t%s%n\t%s", this.name, this.innerAddress, this.property);
 	}
@@ -163,14 +164,13 @@ public class MicroUnit implements InputByteProcessor {
 			// TODO: Особый случай. Принудительная инициализация
 			// микроконтроллера по запросу от самого микроконтроллера
 		} else if (pack.data.length > 0) {
-			Object old = this.getField(pack.perifiral);
 			this.updateField(pack.perifiral, pack.data);
-			pcs.firePropertyChange(this.getFieldName(pack.perifiral), old, this.getField(pack.perifiral));
+			this.pcs.firePropertyChange(this.getFieldName(pack.perifiral), null, this.getField(pack.perifiral));
 		}
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-		pcs.addPropertyChangeListener(pcl);
+		this.pcs.addPropertyChangeListener(pcl);
 	}
 
 	protected static void send(DatagramPacket p) {
