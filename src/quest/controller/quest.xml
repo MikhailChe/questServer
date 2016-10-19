@@ -6,43 +6,58 @@
             <innerAddress>127.0.0.1:1024</innerAddress>
             <property>
                 <address>1</address>
-                <name>Тензодатчик 1</name>
-                <type>java.lang.Short</type>
+                <name>Повисли 1</name>
+                <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>2</address>
-                <name>Тензодатчик 2</name>
-                 <type>java.lang.Short</type>
+                <name>Есть нужный вес 1</name>
+                <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>3</address>
-                <name>Электромагнитный замок</name>
-                 <type>java.lang.Boolean</type>
-                <editable>true</editable>
+                <name>Повисли 2</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
             </property>
+            <property>
+                <address>4</address>
+                <name>Есть нужный вес 2</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property group="1">
+                <address>5</address>
+                <name>Антресоль</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+                <onValue>Открыта</onValue>
+                <offValue>Закрыта</offValue></property>
         </units>
         <units>
             <name>Будильник</name>
             <innerAddress>192.168.243.2:1024</innerAddress>
             <property>
                 <address>1</address>
-                <name>Датчик Холла</name>
+                <name>Звонок выставлен</name>
                 <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>2</address>
-                <name>Сигнал будильника</name>
-                 <type>java.lang.Boolean</type>
+                <name>Время выставлено</name>
+                <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>3</address>
-                <name>Электромагнитный замок</name>
-                 <type>java.lang.Boolean</type>
+                <name>Тайинк в машинке</name>
+                <type>java.lang.Boolean</type>
                 <editable>true</editable>
+				<onValue>Открыт</onValue>
+				<offValue>Закрыт</offValue>
             </property>
         </units>
         <units>
@@ -51,96 +66,360 @@
             <property>
                 <address>1</address>
                 <name>Ступень 1</name>
-                <type>java.lang.Short</type>
+                <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>2</address>
-                <name>Ступень 2</name>
-                <type>java.lang.Short</type>
+                <name>Ступень 3</name>
+                <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>3</address>
-                <name>Ступень 3</name>
-                <type>java.lang.Short</type>
+                <name>Ступень 5</name>
+                <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>4</address>
-                <name>Ступень 4</name>
-                <type>java.lang.Short</type>
+                <name>Ступень 2</name>
+                <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>5</address>
-                <name>Датчик приближения</name>
+                <name>Ступень 8 (рука)</name>
                 <type>java.lang.Boolean</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>6</address>
-                <name>Электромагнитный замок</name>
+                <name>Ставни</name>
                 <type>java.lang.Boolean</type>
                 <editable>true</editable>
+				<onValue>Открыты</onValue>
+				<offValue>Закрыты</offValue>
             </property>
         </units>
         <units>
             <name>Кубики</name>
             <innerAddress>192.168.243.4:1024</innerAddress>
+            <property horizontal="true">
+                <address>1</address>
+                <name>В</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property horizontal="true">
+                <address>2</address>
+                <name>Е</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property horizontal="true">
+                <address>3</address>
+                <name>Ч</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property horizontal="true">
+                <address>4</address>
+                <name>Н</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property horizontal="true">
+                <address>5</address>
+                <name>О</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property horizontal="true">
+                <address>6</address>
+                <name>С</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property horizontal="true">
+                <address>7</address>
+                <name>Т</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property horizontal="true">
+                <address>8</address>
+                <name>Ь</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property group="1">
+                <address>9</address>
+                <name>Небылица</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Азбука</name>
+            <innerAddress>192.168.243.4:1024</innerAddress>
             <property>
                 <address>1</address>
-                <name>Кубик 1</name>
+                <name>Н</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Е</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>3</address>
+                <name>Б</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>4</address>
+                <name>Ы</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>5</address>
+                <name>Л</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>6</address>
+                <name>И</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>7</address>
+                <name>Ц</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>8</address>
+                <name>А</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>9</address>
+                <name>Дверь в фэнтези</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Мухи и свиток</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Муха 1</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Муха 2</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>3</address>
+                <name>Свиток</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Развёрнут</onValue>
+				<offValue>Свёрнут</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Стук в шкафу</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Постучали</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Дверь в зону Бугимена</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Руна и мечь</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Руна вставлена</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Меч</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Свободен</onValue>
+				<offValue>Зафиксирован</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Меч в клетке</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Меч вставлен</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Клетка с Рэдом</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Кольцо с Рэдом</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Рэд в кольце</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Выход из квеста</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыт</onValue>
+				<offValue>Закрыт</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Храп Бугимена</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Бугимен</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+				<onValue>Вклюен</onValue>
+				<offValue>Выключен</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Змейка и дупло</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Змейка вставлена</name>
+                <type>java.lang.Boolean</type>
+                <editable>false</editable>
+            </property>
+            <property>
+                <address>2</address>
+                <name>Дупло</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыто</onValue>
+				<offValue>Закрыто</offValue>
+            </property>
+        </units>
+        <units>
+            <name>Тайник в матрас</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <property>
+                <address>1</address>
+                <name>Прыгнули раз</name>
                 <type>java.lang.Short</type>
                 <editable>false</editable>
             </property>
             <property>
                 <address>2</address>
-                <name>Кубик 2</name>
-                <type>java.lang.Short</type>
-                <editable>false</editable>
+                <name>Задвижка 1</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
             <property>
                 <address>3</address>
-                <name>Кубик 3</name>
-                <type>java.lang.Short</type>
-                <editable>false</editable>
+                <name>Задвижка 2</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
             <property>
                 <address>4</address>
-                <name>Кубик 4</name>
-                <type>java.lang.Short</type>
-                <editable>false</editable>
+                <name>Задвижка 3</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
             <property>
                 <address>5</address>
-                <name>Кубик 5</name>
-                <type>java.lang.Short</type>
-                <editable>false</editable>
+                <name>Задвижка 4</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
             <property>
                 <address>6</address>
-                <name>Кубик 6</name>
-                <type>java.lang.Short</type>
-                <editable>false</editable>
+                <name>Задвижка 5</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
             <property>
                 <address>7</address>
-                <name>Кубик 7</name>
-                <type>java.lang.Short</type>
-                <editable>false</editable>
+                <name>Задвижка 6</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
             <property>
                 <address>8</address>
-                <name>Кубик 8</name>
-                <type>java.lang.Short</type>
-                <editable>false</editable>
+                <name>Задвижка 7</name>
+                <type>java.lang.Boolean</type>
+                <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
             <property>
                 <address>9</address>
-                <name>Светодиоды</name>
+                <name>Задвижка 8</name>
                 <type>java.lang.Boolean</type>
                 <editable>true</editable>
+				<onValue>Открыта</onValue>
+				<offValue>Закрыта</offValue>
             </property>
         </units>
     </MCUs>

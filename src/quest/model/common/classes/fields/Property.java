@@ -1,15 +1,24 @@
 package quest.model.common.classes.fields;
 
+import static quest.controller.log.QLog.MsgType.INFO;
 import static quest.controller.log.QLog.MsgType.WARNING;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import quest.controller.log.QLog;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class Property implements Comparable<Property> {
+
+	@XmlAttribute
+	public int group = 0;
+
+	@XmlAttribute
+	Boolean horizontal;
+
 	@XmlElement
 	public byte address;
 	@XmlElement
@@ -20,6 +29,10 @@ public class Property implements Comparable<Property> {
 	Class<?> type = Object.class;
 	@XmlElement
 	boolean editable;
+	@XmlElement
+	String onValue;
+	@XmlElement
+	String offValue;
 
 	public Property() {
 		this((byte) 0, "Стд. свойство", null, false);
@@ -43,25 +56,26 @@ public class Property implements Comparable<Property> {
 	}
 
 	public Class<?> getType() {
-		return type;
+		return this.type;
 	}
 
 	public Object getValue() {
-		return val;
+		return this.val;
 	}
 
 	public void setValue(Object val2) {
-		if (type == null) {
+		if (this.type == null) {
 			this.val = val2;
 
 			if (val2 != null) {
 				this.type = val2.getClass();
 			}
 		} else {
-			if (type.isInstance(val2)) {
+			if (this.type.isInstance(val2)) {
 				this.val = val2;
 			} else {
-				QLog.inst().print("Value not isntanceof " + type + ", is instance of" + val2.getClass().getSimpleName(),
+				QLog.inst().print(
+						"Value not isntanceof " + this.type + ", is instance of" + val2.getClass().getSimpleName(),
 						WARNING);
 
 			}
@@ -69,15 +83,15 @@ public class Property implements Comparable<Property> {
 	}
 
 	public void setValue(byte[] array) {
-		System.out.println("Byte array here (for property)");
+		QLog.inst().print("Обрабатываю массив данных и обновляю свойства", INFO);
 		if (array.length > 0) {
-			if (type.equals(Boolean.class)) {
+			if (this.type.equals(Boolean.class)) {
 				Boolean boolval = (array[0] != 0 ? true : false);
 				this.val = boolval;
-			} else if (type.equals(Byte.class)) {
+			} else if (this.type.equals(Byte.class)) {
 				Byte byteval = array[0];
 				this.val = byteval;
-			} else if (type.equals(Short.class)) {
+			} else if (this.type.equals(Short.class)) {
 				Short shortval = (short) (Byte.toUnsignedInt(array[0]) + (Byte.toUnsignedInt(array[1]) << 8));
 				this.val = shortval;
 			} else {
@@ -89,11 +103,26 @@ public class Property implements Comparable<Property> {
 	}
 
 	public boolean isEditable() {
-		return editable;
+		return this.editable;
 	}
 
 	public String getName() {
 		return this.name;
+	}
+
+	public String getOnValue() {
+		return this.onValue;
+	}
+
+	public String getOffValue() {
+		return this.offValue;
+	}
+
+	public boolean isHorizontal() {
+		if (this.horizontal != null) {
+			return this.horizontal;
+		}
+		return false;
 	}
 
 	@Override
@@ -120,12 +149,12 @@ public class Property implements Comparable<Property> {
 
 	@Override
 	public int hashCode() {
-		return Byte.hashCode(address);
+		return Byte.hashCode(this.address);
 	}
 
+	@Override
 	public String toString() {
-
-		return String.format("%s%s %s", (editable ? "*" : ""), type.getSimpleName().toString(), val);
+		return String.format("%s%s %s", (this.editable ? "*" : ""), this.type.getSimpleName().toString(), this.val);
 	}
 
 }
