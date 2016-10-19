@@ -14,7 +14,7 @@ public class Mainframe {
 	private JFrame frame;
 
 	public Mainframe(String str) {
-		this.frame = new JFrame("Квест");
+		this.frame = new JFrame(str);
 		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.frame.setPreferredSize(new Dimension(800, 600));
 	}

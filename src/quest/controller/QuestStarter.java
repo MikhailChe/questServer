@@ -17,8 +17,8 @@ import quest.controller.net.tcp.QuestHttpServer;
 import quest.controller.net.udp.McuUdpServer;
 import quest.model.common.classes.MicroUnit;
 import quest.model.quest1.QuestXML;
-import quest.view.MCULists;
 import quest.view.Mainframe;
+import quest.view.McuAddresses;
 
 public class QuestStarter {
 
@@ -63,9 +63,10 @@ public class QuestStarter {
 			LOG.print("Не смог запустить сервер контроллеров" + e.getLocalizedMessage(), ERROR);
 		}
 		Mainframe frame = new Mainframe(quest.toString());
-		frame.setContentPane(new MCULists(quest.units));
+		// frame.setContentPane(new MCULists(quest.units));
+		frame.setContentPane(new McuAddresses(quest.units));
 		frame.showMe();
-		updateAllLoop(quest.units);
+		//updateAllLoop(quest.units);
 	}
 
 	static void updateAllLoop(List<MicroUnit> units) {

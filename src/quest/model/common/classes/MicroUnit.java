@@ -216,7 +216,7 @@ public class MicroUnit implements InputByteProcessor {
 		}
 	}
 
-	static class InetSocketAddressXmlAdapter extends XmlAdapter<String, InetSocketAddress> {
+	public static class InetSocketAddressXmlAdapter extends XmlAdapter<String, InetSocketAddress> {
 		public InetSocketAddressXmlAdapter() {
 			super();
 		}
