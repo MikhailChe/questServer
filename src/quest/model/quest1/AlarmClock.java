@@ -34,6 +34,7 @@ public class AlarmClock extends MicroUnit implements InputByteProcessor {
 		PacketData p = new PacketData(data);
 		if (p.data.length > 0) {
 			switch (p.perifiral) {
+			default:
 			case 1:
 				setHall(p.data[0] != 0 ? true : false);
 				break;

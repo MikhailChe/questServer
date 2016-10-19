@@ -40,19 +40,19 @@ public class PacketData {
 	}
 
 	public PacketData(byte[] data) {
-		perifiral = data[0];
-		write = data[1] != 0 ? true : false;
+		this.perifiral = data[0];
+		this.write = data[1] != 0 ? true : false;
 		short dataLength = data[3];
 		this.data = Arrays.copyOfRange(data, 4, 4 + dataLength);
 	}
 
 	public byte[] getBytes() {
-		byte[] out = new byte[data.length + 4];
-		out[0] = perifiral;
-		out[1] = write ? (byte) 1 : (byte) 0;
+		byte[] out = new byte[this.data.length + 4];
+		out[0] = this.perifiral;
+		out[1] = this.write ? (byte) 1 : (byte) 0;
 		out[3] = (byte) this.data.length;
 		for (int i = 4; i < out.length; i++) {
-			out[i] = data[i - 4];
+			out[i] = this.data[i - 4];
 		}
 		return out;
 	}
