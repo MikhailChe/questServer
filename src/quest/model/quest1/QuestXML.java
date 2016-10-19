@@ -16,9 +16,10 @@ public class QuestXML {
 	String name = "Имя квеста";
 
 	@XmlElementWrapper(name = "MCUs", nillable = true)
-	public List<MicroUnit> units = new ArrayList<MicroUnit>();
+	public List<MicroUnit> units = new ArrayList<>();
 
+	@Override
 	public String toString() {
-		return name;
+		return this.name;
 	}
 }

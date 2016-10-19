@@ -39,9 +39,9 @@ public class QuestStarter {
 		try (InputStream stream = QuestStarter.class.getResourceAsStream("quest.xml");) {
 			quest = JAXB.unmarshal(stream, QuestXML.class);
 			LOG.print("Конфигурация квеста " + quest + " загружена.", INFO);
+			// JAXB.marshal(quest, new File("questburg.xml"));
 		} catch (Exception e) {
 			LOG.print("Не смог загрузить конфигурацию квеста: " + e.getLocalizedMessage(), ERROR);
-
 			return;
 		}
 

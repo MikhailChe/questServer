@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -21,6 +23,7 @@ import quest.controller.QuestStarter;
 import quest.controller.log.QLog;
 import quest.controller.net.Addresser;
 import quest.model.common.classes.fields.Property;
+import quest.model.common.classes.fields.PropertyGroup;
 import quest.model.common.ifaces.InputByteProcessor;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -30,8 +33,11 @@ public class MicroUnit implements InputByteProcessor {
 	@XmlElement
 	@XmlJavaTypeAdapter(value = InetSocketAddressXmlAdapter.class)
 	InetSocketAddress innerAddress;
+
 	@XmlElement
-	public List<Property> property = new ArrayList<>();
+	public List<PropertyGroup> group = new ArrayList<>();
+
+	private Map<Integer, Property> properties = null;
 
 	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
@@ -69,28 +75,40 @@ public class MicroUnit implements InputByteProcessor {
 	}
 
 	public String getFieldName(int address) {
-		for (Property field : this.property) {
-			if (field.address == address) {
-				return field.getName();
-			}
+		Property prop = getProperty(address);
+		if (prop != null) {
+			prop.getName();
 		}
 		return null;
 	}
 
-	public Object getField(int address) {
-		for (Property field : this.property) {
-			if (field.address == address) {
-				return field.getValue();
+	public void initProperties() {
+		synchronized (this) {
+			if (this.properties == null) {
+				this.properties = new Hashtable<>();
+				for (PropertyGroup grp : this.group) {
+					for (Property prop : grp.getProperties()) {
+						this.properties.put((int) prop.address, prop);
+					}
+				}
 			}
+		}
+	}
+
+	public Object getField(int address) {
+
+		Property property = getProperty(address);
+		if (property != null) {
+			return property.getValue();
 		}
 		return null;
 	}
 
 	public void setField(int address, Object val) {
-		for (Property field : this.property) {
-			if (field.address == address) {
-				field.setValue(val);
-			}
+
+		Property property = getProperty(address);
+		if (property != null) {
+			property.setValue(val);
 		}
 	}
 
@@ -100,17 +118,30 @@ public class MicroUnit implements InputByteProcessor {
 		this.pcs.firePropertyChange(getFieldName(address), null, newValue);
 	}
 
-	public void setField(int address, byte[] val) {
-		for (Property field : this.property) {
-			if (field.address == address) {
-				field.setValue(val);
-			}
-		}
-	}
-
 	public void updateField(int address, byte[] val) {
 		QLog.inst().print("Обновляю данные " + this.getName() + ":" + address, INFO);
 		setField(address, val);
+		this.pcs.firePropertyChange(this.getFieldName(address), null, this.getField(address));
+	}
+
+	public void setField(int address, byte[] val) {
+		Property property = getProperty(address);
+		property.setValue(val);
+	}
+
+	public List<Property> getProperties() {
+		if (this.properties == null) {
+			initProperties();
+		}
+		return new ArrayList<>(this.properties.values());
+
+	}
+
+	public Property getProperty(int address) {
+		if (this.properties == null) {
+			initProperties();
+		}
+		return this.properties.get(address);
 	}
 
 	public void requestRemoteUpdate(int address, boolean o) {
@@ -152,7 +183,7 @@ public class MicroUnit implements InputByteProcessor {
 
 	@Override
 	public String toString() {
-		return String.format("%-20s\t%s%n\t%s", this.name, this.innerAddress, this.property);
+		return String.format("%-20s\t%s", this.name, this.innerAddress);
 	}
 
 	@Override
@@ -165,7 +196,6 @@ public class MicroUnit implements InputByteProcessor {
 			// микроконтроллера по запросу от самого микроконтроллера
 		} else if (pack.data.length > 0) {
 			this.updateField(pack.perifiral, pack.data);
-			this.pcs.firePropertyChange(this.getFieldName(pack.perifiral), null, this.getField(pack.perifiral));
 		}
 	}
 

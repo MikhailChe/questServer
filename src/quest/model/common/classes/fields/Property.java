@@ -5,20 +5,12 @@ import static quest.controller.log.QLog.MsgType.WARNING;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import quest.controller.log.QLog;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class Property implements Comparable<Property> {
-
-	@XmlAttribute
-	public int group = 0;
-
-	@XmlAttribute
-	Boolean horizontal;
-
 	@XmlElement
 	public byte address;
 	@XmlElement
@@ -116,13 +108,6 @@ public class Property implements Comparable<Property> {
 
 	public String getOffValue() {
 		return this.offValue;
-	}
-
-	public boolean isHorizontal() {
-		if (this.horizontal != null) {
-			return this.horizontal;
-		}
-		return false;
 	}
 
 	@Override

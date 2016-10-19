@@ -186,7 +186,7 @@ public class QuestHttpServer {
 					{
 						sb.append("\"units\":[");
 
-						sb.append(unit.property.stream().map(Property::getName).map(s -> "\"" + s + "\"")
+						sb.append(unit.getProperties().stream().map(Property::getName).map(s -> "\"" + s + "\"")
 								.collect(Collectors.joining(",")));
 
 						sb.append(']');
@@ -201,7 +201,7 @@ public class QuestHttpServer {
 					t.close();
 				}
 			});
-			for (Property prop : unit.property) {
+			for (Property prop : unit.getProperties()) {
 				this.httpServer.createContext("/api/" + unitName + "/" + prop.getName(), new ProHandler() {
 					@Override
 					public void handlePro(HttpExchange t) throws IOException {
