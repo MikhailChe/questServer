@@ -146,14 +146,17 @@ public class MicroUnit implements InputByteProcessor {
 
 	public void requestRemoteUpdate(int address, boolean o) {
 		send(datagramForData(address, true, o));
+		initialize();
 	}
 
 	public void requestRemoteUpdate(int address, byte o) {
 		send(datagramForData(address, true, o));
+		initialize();
 	}
 
 	public void requestRemoteUpdate(int address, short o) {
 		send(datagramForData(address, true, o));
+		initialize();
 	}
 
 	protected DatagramPacket datagramForData(int perifiral, boolean write, byte[] data) {
