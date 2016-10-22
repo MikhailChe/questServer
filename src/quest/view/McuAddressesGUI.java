@@ -1,8 +1,14 @@
 package quest.view;
 
+import static java.awt.Color.GREEN;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,6 +41,14 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 	Mainframe frame;
 	JPanel boxList;
 
+	private static final int INIT_RETRY_DELAY_MS = 3000;
+	private static final int INIT_RETRY_TIMES = 3;
+
+	private static final String START_LABEL = "Старт";
+	private static final String CONTINUE_LABEL = "Продолжить";
+
+	private static final int CELL_HEIGHT = 30;
+
 	public McuAddressesGUI(List<MicroUnit> units, Mainframe frame) {
 		super(new BorderLayout(4, 4));
 		this.units = units;
@@ -49,12 +63,9 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 	}
 
 	public void createAndShowGui() {
-		final String START_LABEL = "Старт";
-		final String CONTINUE_LABEL = "Продолжить";
 		JButton startButton = new JButton(START_LABEL);
 		final AtomicInteger controllersCount = new AtomicInteger(0);
 		final AtomicBoolean anyErrorsFlag = new AtomicBoolean(false);
-		final int CELL_HEIGHT = 30;
 
 		for (MicroUnit unit : this.units) {
 			final JPanel singleLine = new JPanel();
@@ -66,19 +77,37 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 			nameLabel.setMaximumSize(nameLabel.getMinimumSize());
 			nameLabel.setPreferredSize(nameLabel.getMinimumSize());
 
-			final JTextField addressField = new JTextField(20);
+			final JTextField addressField = new JTextField();
 			try {
 				addressField.setText(new InetSocketAddressXmlAdapter().marshal(unit.getAddress()));
 			} catch (Exception e) {
 				QLog.inst().print(e.getLocalizedMessage(), MsgType.ERROR);
 			}
-			addressField.addActionListener((event) -> {
+
+			final Runnable unitAddressUpdater = () -> {
 				try {
 					unit.setAddress(new InetSocketAddressXmlAdapter().unmarshal(addressField.getText()));
 					QLog.inst().print(unit.getAddress().toString(), MsgType.INFO);
+					addressField.setBackground(Color.WHITE);
 				} catch (Exception e) {
 					QLog.inst().print(e.getLocalizedMessage(), MsgType.ERROR);
+					addressField.setBackground(new Color(255, 128, 128));
 				}
+			};
+
+			addressField.addFocusListener(new FocusListener() {
+				@Override
+				public void focusGained(FocusEvent e) {
+					unitAddressUpdater.run();
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+					unitAddressUpdater.run();
+				}
+			});
+			addressField.addActionListener((event) -> {
+				unitAddressUpdater.run();
 			});
 			addressField.setMinimumSize(new Dimension(300, CELL_HEIGHT));
 			addressField.setMaximumSize(addressField.getMinimumSize());
@@ -91,8 +120,8 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 					unit.initialize();
 					initLabel.setText("Инициализация");
 
-					final AtomicInteger counter = new AtomicInteger(3);
-					final Timer retryInitTimer = new Timer(500, null);
+					final AtomicInteger counter = new AtomicInteger(INIT_RETRY_TIMES);
+					final Timer retryInitTimer = new Timer(INIT_RETRY_DELAY_MS, null);
 					retryInitTimer.addActionListener((retryInitActionEvent) -> {
 						QLog.inst().print("Повторяем инициализацию", MsgType.INFO);
 
@@ -100,6 +129,7 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 						if (currentCtr <= 0) {
 							retryInitTimer.stop();
 							initLabel.setText("Инициализация - ОШИБКА");
+							initLabel.setForeground(Color.RED);
 							anyErrorsFlag.set(true);
 							controllersCount.incrementAndGet();
 						} else {
@@ -110,11 +140,15 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 					retryInitTimer.setRepeats(true);
 					retryInitTimer.start();
 
-					final PropertyChangeListener pcl = (initOkEevent) -> {
-						initLabel.setText("Инициализация - ОК");
-						unit.removePropertyChangeListener((PropertyChangeListener) this);
-						retryInitTimer.stop();
-						controllersCount.incrementAndGet();
+					final PropertyChangeListener pcl = new PropertyChangeListener() {
+						@Override
+						public void propertyChange(PropertyChangeEvent evt) {
+							initLabel.setText("Инициализация - ОК");
+							initLabel.setForeground(GREEN);
+							unit.removePropertyChangeListener(this);
+							retryInitTimer.stop();
+							controllersCount.incrementAndGet();
+						};
 					};
 					unit.addPropertyChangeListener(pcl);
 				}
