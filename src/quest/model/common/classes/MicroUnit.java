@@ -203,6 +203,10 @@ public class MicroUnit implements InputByteProcessor {
 		this.pcs.addPropertyChangeListener(pcl);
 	}
 
+	public void removePropertyChangeListener(PropertyChangeListener pcl) {
+		this.pcs.removePropertyChangeListener(pcl);
+	}
+
 	protected static void send(DatagramPacket p) {
 		if (QuestStarter.udpServer != null) {
 			if (QuestStarter.udpServer.socket != null) {
