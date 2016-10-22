@@ -18,7 +18,7 @@ import quest.controller.net.udp.McuUdpServer;
 import quest.model.common.classes.MicroUnit;
 import quest.model.quest1.QuestXML;
 import quest.view.Mainframe;
-import quest.view.McuAddresses;
+import quest.view.McuAddressesGUI;
 
 public class QuestStarter {
 
@@ -64,9 +64,9 @@ public class QuestStarter {
 		}
 		Mainframe frame = new Mainframe(quest.toString());
 		// frame.setContentPane(new MCULists(quest.units));
-		frame.setContentPane(new McuAddresses(quest.units));
+		frame.setContentPane(new McuAddressesGUI(quest.units, frame));
 		frame.showMe();
-		//updateAllLoop(quest.units);
+		// updateAllLoop(quest.units);
 	}
 
 	static void updateAllLoop(List<MicroUnit> units) {
