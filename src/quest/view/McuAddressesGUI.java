@@ -1,44 +1,71 @@
 package quest.view;
 
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import quest.controller.QuestStarter;
 import quest.controller.log.QLog;
 import quest.controller.log.QLog.MsgType;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.MicroUnit.InetSocketAddressXmlAdapter;
 
-public class McuAddressesGUI extends JPanel {
+public class McuAddressesGUI extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -1842318840231517558L;
 
 	List<MicroUnit> units;
 
 	Mainframe frame;
+	JPanel boxList;
 
 	public McuAddressesGUI(List<MicroUnit> units, Mainframe frame) {
-		super(new GridLayout(0, 1));
+		super(new BorderLayout(4, 4));
 		this.units = units;
 		this.frame = frame;
+		this.boxList = new JPanel();
+		this.boxList.setLayout(new BoxLayout(this.boxList, BoxLayout.PAGE_AXIS));
+
+		JScrollPane scrollPanelList = new JScrollPane(this.boxList);
+
+		this.add(scrollPanelList, BorderLayout.CENTER);
 		SwingUtilities.invokeLater(this::createAndShowGui);
 	}
 
 	public void createAndShowGui() {
-		JButton startButton = new JButton("Cтарт");
+		final String START_LABEL = "Старт";
+		final String CONTINUE_LABEL = "Продолжить";
+		JButton startButton = new JButton(START_LABEL);
 		final AtomicInteger controllersCount = new AtomicInteger(0);
 		final AtomicBoolean anyErrorsFlag = new AtomicBoolean(false);
+		final int CELL_HEIGHT = 30;
+
 		for (MicroUnit unit : this.units) {
-			final JPanel singleLine = new JPanel(new GridLayout(1, 0));
+			final JPanel singleLine = new JPanel();
+			singleLine.setLayout(new BoxLayout(singleLine, BoxLayout.LINE_AXIS));
+
+			JLabel nameLabel = new JLabel(unit.getName());
+			nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+			nameLabel.setMinimumSize(new Dimension(200, CELL_HEIGHT));
+			nameLabel.setMaximumSize(nameLabel.getMinimumSize());
+			nameLabel.setPreferredSize(nameLabel.getMinimumSize());
+
 			final JTextField addressField = new JTextField(20);
 			try {
 				addressField.setText(new InetSocketAddressXmlAdapter().marshal(unit.getAddress()));
@@ -53,21 +80,21 @@ public class McuAddressesGUI extends JPanel {
 					QLog.inst().print(e.getLocalizedMessage(), MsgType.ERROR);
 				}
 			});
-
-			JLabel nameLabel = new JLabel(unit.getName());
-			nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+			addressField.setMinimumSize(new Dimension(300, CELL_HEIGHT));
+			addressField.setMaximumSize(addressField.getMinimumSize());
+			addressField.setPreferredSize(addressField.getMinimumSize());
 
 			JLabel initLabel = new JLabel("");
-			startButton.addActionListener((e) -> {
-				if (e.getActionCommand().equals("Старт")) {
+			startButton.addActionListener((startButtonActionEvent) -> {
+				if (startButtonActionEvent.getActionCommand().equals(START_LABEL)) {
 					addressField.setEnabled(false);
 					unit.initialize();
 					initLabel.setText("Инициализация");
 
 					final AtomicInteger counter = new AtomicInteger(3);
-					final Timer retryInitTimer = new Timer(3000, null);
+					final Timer retryInitTimer = new Timer(500, null);
 					retryInitTimer.addActionListener((retryInitActionEvent) -> {
-						QLog.inst().print("Сработал таймер", MsgType.INFO);
+						QLog.inst().print("Повторяем инициализацию", MsgType.INFO);
 
 						int currentCtr = counter.getAndDecrement();
 						if (currentCtr <= 0) {
@@ -92,29 +119,80 @@ public class McuAddressesGUI extends JPanel {
 					unit.addPropertyChangeListener(pcl);
 				}
 			});
+			initLabel.setMinimumSize(new Dimension(0, CELL_HEIGHT));
+			initLabel.setMaximumSize(new Dimension(200, CELL_HEIGHT));
+			initLabel.setPreferredSize(new Dimension(10, CELL_HEIGHT));
 
+			// singleLine.add(Box.createHorizontalGlue());
 			singleLine.add(nameLabel);
+			singleLine.add(Box.createRigidArea(new Dimension(5, 0)));
 			singleLine.add(addressField);
+			singleLine.add(Box.createRigidArea(new Dimension(5, 0)));
 			singleLine.add(initLabel);
 
-			add(singleLine);
+			this.boxList.add(singleLine);
 		}
-		Timer timer = new Timer(1000, null);
-		timer.addActionListener((startToLaunchTimerEvent) -> {
+		Timer startToLaunchTimer = new Timer(1000, null);
+		startToLaunchTimer.addActionListener((startToLaunchTimerEvent) -> {
 			if (controllersCount.get() >= this.units.size()) {
 				if (anyErrorsFlag.get()) {
-					startButton.setText("Продолжить...");
+					startButton.setText(CONTINUE_LABEL);
 					startButton.addActionListener((continueActionEven) -> {
-						if (continueActionEven.getActionCommand().equals("Продолжить..."))
-							this.frame.setContentPane(new MCULists(this.units));
+						if (continueActionEven.getActionCommand().equals(CONTINUE_LABEL)) {
+							SwingUtilities.invokeLater(() -> {
+								this.frame.setContentPane(new MCULists(this.units));
+								new Thread(() -> {
+									QuestStarter.updateAllLoop(this.units);
+								}).start();
+								this.frame.showMe();
+							});
+						}
 					});
 				} else {
-					this.frame.setContentPane(new MCULists(this.units));
+					SwingUtilities.invokeLater(() -> {
+						this.frame.setContentPane(new MCULists(this.units));
+						new Thread(() -> {
+							QuestStarter.updateAllLoop(this.units);
+						}).start();
+						this.frame.showMe();
+					});
 				}
-				timer.stop();
+				startToLaunchTimer.stop();
 			}
 		});
-		timer.start();
-		add(startButton);
+		startToLaunchTimer.start();
+		Box startBox = Box.createHorizontalBox();
+		startBox.add(Box.createGlue());
+		startBox.add(startButton);
+		startBox.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+		startBox.setAlignmentX(SwingConstants.RIGHT);
+		startButton.setAlignmentX(SwingConstants.RIGHT);
+		add(startBox, BorderLayout.SOUTH);
+	}
+
+	@Override
+	public Dimension getPreferredScrollableViewportSize() {
+		this.getPreferredSize();
+		return null;
+	}
+
+	@Override
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return 0;
+	}
+
+	@Override
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return 0;
+	}
+
+	@Override
+	public boolean getScrollableTracksViewportWidth() {
+		return true;
+	}
+
+	@Override
+	public boolean getScrollableTracksViewportHeight() {
+		return true;
 	}
 }

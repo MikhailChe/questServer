@@ -69,7 +69,7 @@ public class QuestStarter {
 		// updateAllLoop(quest.units);
 	}
 
-	static void updateAllLoop(List<MicroUnit> units) {
+	public static void updateAllLoop(List<MicroUnit> units) {
 		while (true) {
 			for (MicroUnit unit : units) {
 				unit.initialize();
