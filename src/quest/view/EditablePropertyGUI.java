@@ -52,7 +52,6 @@ public class EditablePropertyGUI extends JComponent {
 			};
 			checkbox.addActionListener(al);
 			this.unit.addPropertyChangeListener((e) -> {
-				QLog.inst().print("Пришло письмо для галочки", INFO);
 				if (this.prop.getValue() != null) {
 					if (this.prop.getValue() instanceof Boolean) {
 						if (this.prop.getValue().equals(true)) {
@@ -95,11 +94,8 @@ public class EditablePropertyGUI extends JComponent {
 			buttonOff.addActionListener(al);
 
 			this.unit.addPropertyChangeListener((e) -> {
-				QLog.inst().print("Пришло письмо для кнопки", INFO);
 				if (this.prop.getValue() != null) {
-					QLog.inst().print("Письмо не нулевое", INFO);
 					if (this.prop.getValue() instanceof Boolean) {
-						QLog.inst().print("Письмо булевое", INFO);
 						if (this.prop.getValue().equals(true)) {
 							QLog.inst().print("Письмо булевая правда", INFO);
 							buttonGroup.setSelected(buttonOn.getModel(), true);
