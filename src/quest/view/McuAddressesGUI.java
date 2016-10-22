@@ -41,8 +41,8 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 	Mainframe frame;
 	JPanel boxList;
 
-	private static final int INIT_RETRY_DELAY_MS = 3000;
-	private static final int INIT_RETRY_TIMES = 3;
+	private static final int INIT_RETRY_DELAY_MS = 800;
+	private static final int INIT_RETRY_TIMES = 1;
 
 	private static final String START_LABEL = "Старт";
 	private static final String CONTINUE_LABEL = "Продолжить";
@@ -167,12 +167,16 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 			this.boxList.add(singleLine);
 		}
 		Timer startToLaunchTimer = new Timer(1000, null);
+		startButton.addActionListener((e) -> {
+			startButton.setEnabled(false);
+		});
 		startToLaunchTimer.addActionListener((startToLaunchTimerEvent) -> {
 			if (controllersCount.get() >= this.units.size()) {
 				if (anyErrorsFlag.get()) {
 					startButton.setText(CONTINUE_LABEL);
-					startButton.addActionListener((continueActionEven) -> {
-						if (continueActionEven.getActionCommand().equals(CONTINUE_LABEL)) {
+					startButton.setEnabled(true);
+					startButton.addActionListener((continueActionEvent) -> {
+						if (continueActionEvent.getActionCommand().equals(CONTINUE_LABEL)) {
 							SwingUtilities.invokeLater(() -> {
 								this.frame.setContentPane(new MCULists(this.units));
 								new Thread(() -> {

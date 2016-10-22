@@ -5,9 +5,12 @@ import static quest.controller.log.QLog.MsgType.INFO;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
+import javax.swing.ButtonModel;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
 
@@ -15,7 +18,7 @@ import quest.controller.log.QLog;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.fields.Property;
 
-public class EditablePropertyGUI extends JPanel {
+public class EditablePropertyGUI extends JComponent {
 	/**
 	 * 
 	 */
@@ -32,45 +35,96 @@ public class EditablePropertyGUI extends JPanel {
 	}
 
 	private void createAndShowGUI() {
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createTitledBorder(this.prop.getName()));
-
-		final ButtonGroup buttonGroup = new ButtonGroup();
-		final JRadioButton buttonOn = new JRadioButton(this.prop.getOnValue());
-		final JRadioButton buttonOff = new JRadioButton(this.prop.getOffValue());
-		ActionListener al = (e) -> {
-			buttonGroup.clearSelection();
-			if (e.getSource().equals(buttonOn)) {
-				this.unit.requestRemoteUpdate(this.prop.address, true);
-			} else {
-				this.unit.requestRemoteUpdate(this.prop.address, false);
-			}
-		};
-		buttonOn.addActionListener(al);
-		buttonOff.addActionListener(al);
-
-		this.unit.addPropertyChangeListener((e) -> {
-			QLog.inst().print("Пришло письмо для кнопки", INFO);
-			if (this.prop.getValue() != null) {
-				QLog.inst().print("Письмо не нулевое", INFO);
-				if (this.prop.getValue() instanceof Boolean) {
-					QLog.inst().print("Письмо булевое", INFO);
-					if (this.prop.getValue().equals(true)) {
-						QLog.inst().print("Письмо булевая правда", INFO);
-						buttonGroup.setSelected(buttonOn.getModel(), true);
-					} else {
-						QLog.inst().print("Письмо булевая ложь", INFO);
-						buttonGroup.setSelected(buttonOff.getModel(), true);
+		if (this.prop.getOnValue() == null && this.prop.getOffValue() == null) {
+			final JCheckBox checkbox = new JCheckBox();
+			final ButtonModel bm = checkbox.getModel();
+			ActionListener al = (e) -> {
+				SwingUtilities.invokeLater(() -> {
+					this.unit.requestRemoteUpdate(this.prop.address, bm.isSelected());
+					bm.setEnabled(false);
+					bm.setRollover(true);
+					bm.setPressed(true);
+					bm.setArmed(true);
+					bm.setSelected(!bm.isSelected());
+				});
+			};
+			checkbox.addActionListener(al);
+			this.unit.addPropertyChangeListener((e) -> {
+				QLog.inst().print("Пришло письмо для галочки", INFO);
+				if (this.prop.getValue() != null) {
+					if (this.prop.getValue() instanceof Boolean) {
+						if (this.prop.getValue().equals(true)) {
+							bm.setSelected(true);
+						} else {
+							bm.setSelected(false);
+						}
+						bm.setRollover(false);
+						bm.setPressed(false);
+						bm.setArmed(false);
+						bm.setEnabled(true);
 					}
 				}
-			}
-		});
-		buttonGroup.add(buttonOn);
-		buttonGroup.add(buttonOff);
+			});
 
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+			Box innerBox = Box.createVerticalBox();
+			innerBox.add(Box.createHorizontalGlue());
+			innerBox.add(checkbox);
+			innerBox.add(Box.createHorizontalGlue());
+			innerBox.setAlignmentY(0);
+			Box verticalGlueBox = Box.createHorizontalBox();
+			verticalGlueBox.add(innerBox);
 
-		add(buttonOn);
-		add(buttonOff);
+			verticalGlueBox.add(Box.createVerticalGlue());
 
+			add(verticalGlueBox);
+		} else {
+			final ButtonGroup buttonGroup = new ButtonGroup();
+			final JRadioButton buttonOn = new JRadioButton(this.prop.getOnValue());
+			final JRadioButton buttonOff = new JRadioButton(this.prop.getOffValue());
+			ActionListener al = (e) -> {
+				buttonGroup.clearSelection();
+				if (e.getSource().equals(buttonOn)) {
+					this.unit.requestRemoteUpdate(this.prop.address, true);
+				} else {
+					this.unit.requestRemoteUpdate(this.prop.address, false);
+				}
+			};
+			buttonOn.addActionListener(al);
+			buttonOff.addActionListener(al);
+
+			this.unit.addPropertyChangeListener((e) -> {
+				QLog.inst().print("Пришло письмо для кнопки", INFO);
+				if (this.prop.getValue() != null) {
+					QLog.inst().print("Письмо не нулевое", INFO);
+					if (this.prop.getValue() instanceof Boolean) {
+						QLog.inst().print("Письмо булевое", INFO);
+						if (this.prop.getValue().equals(true)) {
+							QLog.inst().print("Письмо булевая правда", INFO);
+							buttonGroup.setSelected(buttonOn.getModel(), true);
+						} else {
+							QLog.inst().print("Письмо булевая ложь", INFO);
+							buttonGroup.setSelected(buttonOff.getModel(), true);
+						}
+					}
+				}
+			});
+			buttonGroup.add(buttonOn);
+			buttonGroup.add(buttonOff);
+
+			Box innerBox = Box.createVerticalBox();
+			innerBox.add(Box.createHorizontalGlue());
+			innerBox.add(buttonOn);
+			innerBox.add(buttonOff);
+			innerBox.add(Box.createHorizontalGlue());
+			innerBox.setAlignmentY(0);
+			Box verticalGlueBox = Box.createHorizontalBox();
+			verticalGlueBox.add(innerBox);
+
+			verticalGlueBox.add(Box.createVerticalGlue());
+
+			add(verticalGlueBox);
+		}
 	}
 }

@@ -3,7 +3,7 @@
     <MCUs>
         <units>
             <name>Спортивные кольца</name>
-            <innerAddress>127.0.0.1:1024</innerAddress>
+            <innerAddress>192.168.200.2:1024</innerAddress>
             <group align="VERTICAL" name="">
 				<group align="HORIZONTAL" name="">
 					<group align="VERTICAL" name="Кольцо 1">
@@ -368,20 +368,6 @@
             </group>
         </units>
         <units>
-            <name>Храп Бугимена</name>
-            <innerAddress>192.168.243.2:1024</innerAddress>
-            <group align="HORIZONTAL" name="">
-                <property>
-                    <address>1</address>
-                    <name>Храп Бугимена</name>
-                    <type>java.lang.Boolean</type>
-                    <editable>true</editable>
-                    <onValue>Включен</onValue>
-                    <offValue>Выключен</offValue>
-                </property>
-            </group>
-        </units>
-        <units>
             <name>Змейка и дупло</name>
             <innerAddress>192.168.243.2:1024</innerAddress>
             <group align="VERTICAL" name="">
@@ -403,7 +389,7 @@
         </units>
         <units>
             <name>Тайник в матрас</name>
-            <innerAddress>192.168.243.2:1024</innerAddress>
+            <innerAddress>127.0.0.1:1024</innerAddress>
             <group align="VERTICAL" name="">
                 <group align="VERTICAL" name="">
 					<property>
@@ -413,70 +399,54 @@
 						<editable>false</editable>
 					</property>
                 </group>
-				<group align="HORIZONTAL" name="">
+				<group align="HORIZONTAL" name="Задвижка">
 					<property>
 						<address>2</address>
-						<name>Задвижка 1</name>
+						<name>1</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 					<property>
 						<address>3</address>
-						<name>Задвижка 2</name>
+						<name>2</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 					<property>
 						<address>4</address>
-						<name>Задвижка 3</name>
+						<name>3</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 					<property>
 						<address>5</address>
-						<name>Задвижка 4</name>
+						<name>4</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 					<property>
 						<address>6</address>
-						<name>Задвижка 5</name>
+						<name>5</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 					<property>
 						<address>7</address>
-						<name>Задвижка 6</name>
+						<name>6</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 					<property>
 						<address>8</address>
-						<name>Задвижка 7</name>
+						<name>7</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 					<property>
 						<address>9</address>
-						<name>Задвижка 8</name>
+						<name>8</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Открыта</onValue>
-						<offValue>Закрыта</offValue>
 					</property>
 				</group>
             </group>

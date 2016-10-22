@@ -10,7 +10,7 @@ import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 
 import quest.model.common.classes.MicroUnit;
-import quest.view.layout.ModifiedFlowLayout;
+import quest.view.layout.VerticalGridLayout;
 
 public class MCULists extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -7633912783790852860L;
@@ -18,7 +18,7 @@ public class MCULists extends JPanel implements Scrollable {
 	final List<SingleMicroUnit> guiUnits = new ArrayList<>();
 
 	public MCULists(List<MicroUnit> units) {
-		setLayout(new ModifiedFlowLayout());
+		setLayout(new VerticalGridLayout(10, 10));
 		this.units = units;
 		for (MicroUnit unit : units) {
 			SingleMicroUnit smu = new SingleMicroUnit(unit);

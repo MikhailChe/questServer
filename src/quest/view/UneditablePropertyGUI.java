@@ -1,14 +1,12 @@
 package quest.view;
 
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.Dimension;
 
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
@@ -16,13 +14,13 @@ import javax.swing.SwingUtilities;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.fields.Property;
 
-public class UneditablePropertyGUI extends JPanel {
+public class UneditablePropertyGUI extends JComponent {
 	private static final long serialVersionUID = -9168576951960928929L;
 
 	boolean horizontal;
 	Property prop;
 
-	Component button;
+	JComponent component;
 
 	public UneditablePropertyGUI(MicroUnit unit, Property prop, boolean horizontal) {
 		this.horizontal = horizontal;
@@ -30,17 +28,20 @@ public class UneditablePropertyGUI extends JPanel {
 
 		if (prop.getType().equals(java.lang.Boolean.class)) {
 			AbstractButton cb = new JCheckBox();
-			this.button = (cb);
-			this.button.setEnabled(false);
+			this.component = (cb);
+			this.component.setEnabled(false);
 			unit.addPropertyChangeListener((e) -> {
 				if (prop.getValue() != null)
+
 					if (prop.getValue() instanceof Boolean)
 						cb.setSelected((boolean) prop.getValue());
 			});
 		} else {
 			JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, Short.MIN_VALUE, Short.MAX_VALUE, 1));
-			this.button = (spinner);
-			this.button.setEnabled(false);
+			this.component = (spinner);
+			this.component.setEnabled(false);
+			this.component.setMaximumSize(new Dimension(80, 20));
+			this.component.setPreferredSize(this.component.getMaximumSize());
 			unit.addPropertyChangeListener((e) -> {
 				if (prop.getValue() != null)
 					if (prop.getValue() instanceof Number)
@@ -52,31 +53,36 @@ public class UneditablePropertyGUI extends JPanel {
 	}
 
 	private void createAndShowGUI() {
+		JComponent label = new JLabel(this.prop.getName());
+		// label.setMaximumSize(new Dimension(100,
+		// label.getMaximumSize().height));
+
 		if (this.horizontal) {
-			setLayout(new GridLayout(2, 0));
-			{
-				JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-				panel.add(new JLabel(this.prop.getName()));
-				this.add(panel);
-			}
-			{
-				JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-				panel.add(this.button);
-				this.add(panel);
-			}
-		} else {
 			setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-			setLayout(new GridLayout(0, 2));
 			{
 				{
-					JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-					panel.add(new JLabel(this.prop.getName()));
-					this.add(panel);
+					label.setAlignmentX(.5f);
+					label.setAlignmentY(1f);
+					add(label);
 				}
 				{
-					JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-					panel.add(this.button);
-					this.add(panel);
+					this.component.setAlignmentX(.5f);
+					this.component.setAlignmentY(0f);
+					add(this.component);
+				}
+			}
+		} else {
+			setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+			{
+				{
+					label.setAlignmentX(1f);
+					label.setAlignmentY(.5f);
+					add(label);
+				}
+				{
+					this.component.setAlignmentX(0f);
+					this.component.setAlignmentY(.5f);
+					add(this.component);
 				}
 			}
 		}

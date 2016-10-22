@@ -84,7 +84,12 @@ public class Property implements Comparable<Property> {
 				Byte byteval = array[0];
 				this.val = byteval;
 			} else if (this.type.equals(Short.class)) {
-				Short shortval = (short) (Byte.toUnsignedInt(array[0]) + (Byte.toUnsignedInt(array[1]) << 8));
+				Short shortval = 0;
+				if (array.length >= 2) {
+					shortval = (short) (Byte.toUnsignedInt(array[0]) + (Byte.toUnsignedInt(array[1]) << 8));
+				} else if (array.length == 1) {
+					shortval = (short) Byte.toUnsignedInt(array[0]);
+				}
 				this.val = shortval;
 			} else {
 				QLog.inst().print("Тип данных поля не поддерживается.", WARNING);
