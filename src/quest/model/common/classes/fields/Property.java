@@ -5,6 +5,7 @@ import static quest.controller.log.QLog.MsgType.WARNING;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import quest.controller.log.QLog;
@@ -25,6 +26,10 @@ public class Property implements Comparable<Property> {
 	String onValue;
 	@XmlElement
 	String offValue;
+	@XmlAttribute
+	Boolean keyValue;
+	@XmlAttribute
+	Boolean hidden;
 
 	public Property() {
 		this((byte) 0, "Стд. свойство", null, false);
@@ -115,6 +120,14 @@ public class Property implements Comparable<Property> {
 		return this.offValue;
 	}
 
+	public boolean isKeyValue() {
+		return this.keyValue == null ? false : this.keyValue;
+	}
+
+	public boolean isHidden() {
+		return this.hidden == null ? false : this.hidden;
+	}
+
 	@Override
 	public int compareTo(Property o) {
 		if (o == null)
@@ -144,7 +157,10 @@ public class Property implements Comparable<Property> {
 
 	@Override
 	public String toString() {
-		return String.format("%s%s %s", (this.editable ? "*" : ""), this.type.getSimpleName().toString(), this.val);
+		if (this.type != null)
+			return String.format("%s%s %s", (this.editable ? "*" : ""), this.type.getSimpleName().toString(), this.val);
+		else
+			return String.format("%s %s", (this.editable ? "*" : ""), this.val);
 	}
 
 }

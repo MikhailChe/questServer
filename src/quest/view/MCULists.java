@@ -15,13 +15,13 @@ import quest.view.layout.VerticalGridLayout;
 public class MCULists extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -7633912783790852860L;
 	final List<MicroUnit> units;
-	final List<SingleMicroUnit> guiUnits = new ArrayList<>();
+	final List<SingleMicroUnitGUI> guiUnits = new ArrayList<>();
 
 	public MCULists(List<MicroUnit> units) {
 		setLayout(new VerticalGridLayout(10, 10));
 		this.units = units;
 		for (MicroUnit unit : units) {
-			SingleMicroUnit smu = new SingleMicroUnit(unit);
+			SingleMicroUnitGUI smu = new SingleMicroUnitGUI(unit);
 			this.guiUnits.add(smu);
 		}
 		SwingUtilities.invokeLater(this::initAndShowGUI);
@@ -29,7 +29,7 @@ public class MCULists extends JPanel implements Scrollable {
 	}
 
 	public void initAndShowGUI() {
-		for (SingleMicroUnit smu : this.guiUnits) {
+		for (SingleMicroUnitGUI smu : this.guiUnits) {
 			add(smu);
 		}
 		validate();

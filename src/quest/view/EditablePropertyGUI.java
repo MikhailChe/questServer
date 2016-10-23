@@ -35,11 +35,14 @@ public class EditablePropertyGUI extends JComponent {
 	}
 
 	private void createAndShowGUI() {
+		this.setOpaque(false);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		setBorder(BorderFactory.createTitledBorder(this.prop.getName()));
 		if (this.prop.getOnValue() == null && this.prop.getOffValue() == null) {
 			final JCheckBox checkbox = new JCheckBox();
 			final ButtonModel bm = checkbox.getModel();
+
+			checkbox.setOpaque(false);
 			ActionListener al = (e) -> {
 				SwingUtilities.invokeLater(() -> {
 					this.unit.requestRemoteUpdate(this.prop.address, bm.isSelected());
@@ -82,6 +85,8 @@ public class EditablePropertyGUI extends JComponent {
 			final ButtonGroup buttonGroup = new ButtonGroup();
 			final JRadioButton buttonOn = new JRadioButton(this.prop.getOnValue());
 			final JRadioButton buttonOff = new JRadioButton(this.prop.getOffValue());
+			buttonOn.setOpaque(false);
+			buttonOff.setOpaque(false);
 			ActionListener al = (e) -> {
 				buttonGroup.clearSelection();
 				if (e.getSource().equals(buttonOn)) {
