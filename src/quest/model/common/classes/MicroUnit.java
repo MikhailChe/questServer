@@ -126,7 +126,8 @@ public class MicroUnit implements InputByteProcessor {
 
 	public void setField(int address, byte[] val) {
 		Property property = getProperty(address);
-		property.setValue(val);
+		if (property != null)
+			property.setValue(val);
 	}
 
 	public List<Property> getProperties() {

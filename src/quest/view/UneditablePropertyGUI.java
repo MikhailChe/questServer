@@ -11,6 +11,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
+import quest.controller.log.QLog;
+import quest.controller.log.QLog.MsgType;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.fields.Property;
 
@@ -26,6 +28,14 @@ public class UneditablePropertyGUI extends JComponent {
 		this.horizontal = horizontal;
 		this.prop = prop;
 
+		if (prop == null) {
+			QLog.inst().print("Null property in unit " + unit, MsgType.WARNING);
+			return;
+		}
+		if (prop.getType() == null) {
+			QLog.inst().print("Null type for property " + prop + " in unit " + unit, MsgType.WARNING);
+			return;
+		}
 		if (prop.getType().equals(java.lang.Boolean.class)) {
 			AbstractButton cb = new JCheckBox();
 			this.component = (cb);
@@ -53,9 +63,10 @@ public class UneditablePropertyGUI extends JComponent {
 	}
 
 	private void createAndShowGUI() {
+		this.setOpaque(false);
 		JComponent label = new JLabel(this.prop.getName());
-		// label.setMaximumSize(new Dimension(100,
-		// label.getMaximumSize().height));
+		label.setOpaque(false);
+		this.component.setOpaque(false);
 
 		if (this.horizontal) {
 			setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
