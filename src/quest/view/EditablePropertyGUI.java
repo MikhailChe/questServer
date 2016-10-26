@@ -40,11 +40,10 @@ public class EditablePropertyGUI extends JComponent {
 	private void createAndShowGUI() {
 		this.setOpaque(false);
 		setLayout(new BoxLayout(this, PAGE_AXIS));
-		setBorder(createTitledBorder(this.prop.getName()));
 		if (this.prop.getOnValue() == null && this.prop.getOffValue() == null) {
 			final JCheckBox checkbox = new JCheckBox();
 			final ButtonModel bm = checkbox.getModel();
-			setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+			setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 			checkbox.setOpaque(false);
 			ActionListener al = (e) -> {
 				SwingUtilities.invokeLater(() -> {
@@ -73,15 +72,16 @@ public class EditablePropertyGUI extends JComponent {
 				}
 			});
 
-			Box innerBox = Box.createVerticalBox();
-			innerBox.add(Box.createHorizontalGlue());
 			JLabel nameLabel = new JLabel(this.prop.getName());
+
 			nameLabel.setAlignmentX(.5f);
 			checkbox.setAlignmentX(.5f);
+
+			Box innerBox = Box.createVerticalBox();
 			innerBox.add(nameLabel);
 			innerBox.add(checkbox);
-			innerBox.add(Box.createHorizontalGlue());
 			innerBox.setAlignmentY(0);
+
 			Box verticalGlueBox = Box.createHorizontalBox();
 			verticalGlueBox.add(innerBox);
 
@@ -92,6 +92,9 @@ public class EditablePropertyGUI extends JComponent {
 			final ButtonGroup buttonGroup = new ButtonGroup();
 			final JRadioButton buttonOn = new JRadioButton(this.prop.getOnValue());
 			final JRadioButton buttonOff = new JRadioButton(this.prop.getOffValue());
+
+			setBorder(createTitledBorder(this.prop.getName()));
+
 			buttonOn.setOpaque(false);
 			buttonOff.setOpaque(false);
 			ActionListener al = (e) -> {

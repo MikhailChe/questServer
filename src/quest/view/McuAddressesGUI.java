@@ -27,6 +27,7 @@ import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import quest.controller.QuestStarter;
 import quest.controller.log.QLog;
@@ -56,8 +57,11 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 		this.frame = frame;
 		this.boxList = new JPanel();
 		this.boxList.setLayout(new BoxLayout(this.boxList, BoxLayout.PAGE_AXIS));
-
-		JScrollPane scrollPanelList = new JScrollPane(this.boxList);
+		Box boxValign = Box.createVerticalBox();
+		boxValign.add(Box.createVerticalGlue());
+		boxValign.add(this.boxList);
+		boxValign.add(Box.createVerticalGlue());
+		JScrollPane scrollPanelList = new JScrollPane(boxValign);
 
 		this.add(scrollPanelList, BorderLayout.CENTER);
 		SwingUtilities.invokeLater(this::createAndShowGui);
@@ -93,7 +97,7 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 					QLog.inst().print(
 							"Обновил адрес устройства " + unit.getName() + ": " + unit.getAddress().toString(),
 							MsgType.INFO);
-					addressField.setBackground(Color.WHITE);
+					addressField.setBackground(UIManager.getColor("TextField.background"));
 				} catch (Exception e) {
 					QLog.inst().print(
 							"Неверный адрес устроства " + unit.getName() + ". Ошибка: " + e.getLocalizedMessage(),
@@ -174,7 +178,7 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 			singleLine.add(addressField);
 			singleLine.add(Box.createRigidArea(new Dimension(5, 0)));
 			singleLine.add(initLabel);
-
+			this.boxList.add(Box.createRigidArea(new Dimension(4, 4)));
 			this.boxList.add(singleLine);
 		}
 		Timer startToLaunchTimer = new Timer(1000, null);

@@ -17,6 +17,7 @@ public class Mainframe {
 		this.frame = new JFrame(str);
 		this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.frame.setPreferredSize(new Dimension(800, 600));
+		this.frame.setSize(this.frame.getPreferredSize());
 		this.frame.setLocationRelativeTo(null);
 	}
 
@@ -29,10 +30,7 @@ public class Mainframe {
 
 	public void showMe() {
 		SwingUtilities.invokeLater(() -> {
-
-			this.frame.pack();
 			this.frame.validate();
-			this.frame.setLocationRelativeTo(null);
 			this.frame.setVisible(true);
 		});
 	}
