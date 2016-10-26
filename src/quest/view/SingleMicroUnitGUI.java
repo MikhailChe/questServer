@@ -9,7 +9,6 @@ import static javax.swing.border.TitledBorder.DEFAULT_POSITION;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.Box;
@@ -60,9 +59,7 @@ public class SingleMicroUnitGUI extends JPanel {
 			JComponent forGroup = getComponentForGroup(unit, group, (i == unit.group.size() - 1));
 			forGroup.setAlignmentX(0f);
 			forGroup.setAlignmentY(0f);
-			panel.add(Box.createRigidArea(new Dimension(1, 1)));
 			panel.add(forGroup);
-			panel.add(Box.createRigidArea(new Dimension(1, 1)));
 		}
 		for (Property prop : unit.getProperties()) {
 			if (prop.isKeyValue() && prop.getType().equals(Boolean.class)) {
@@ -86,6 +83,8 @@ public class SingleMicroUnitGUI extends JPanel {
 	}
 
 	public static JComponent getComponentForGroup(MicroUnit unit, PropertyGroup group, boolean last) {
+		final int GROUP_PADDING = 2;
+
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 		switch (group.align) {
@@ -98,14 +97,14 @@ public class SingleMicroUnitGUI extends JPanel {
 			break;
 		}
 		if (group.name != null && !group.name.isEmpty()) {
-			panel.setBorder(createCompoundBorder(createTitledBorder(group.name), createEmptyBorder(8, 8, 8, 8)));
+			panel.setBorder(createCompoundBorder(createTitledBorder(group.name),
+					createEmptyBorder(GROUP_PADDING, GROUP_PADDING, GROUP_PADDING, GROUP_PADDING)));
 		}
 		for (int i = 0; i < group.group.size(); i++) {
 			PropertyGroup grp = group.group.get(i);
 			JComponent forGroup = getComponentForGroup(unit, grp, (i == group.group.size() - 1) && last);
 			forGroup.setAlignmentX(0f);
 			forGroup.setAlignmentY(0f);
-			panel.add(Box.createRigidArea(new Dimension(1, 1)));
 			panel.add(forGroup);
 		}
 
@@ -118,10 +117,10 @@ public class SingleMicroUnitGUI extends JPanel {
 						group.group.size() == 0 && last);
 				forProperty.setAlignmentX(0f);
 				forProperty.setAlignmentY(0f);
-				panel.add(Box.createRigidArea(new Dimension(1, 1)));
 				panel.add(forProperty);
 			}
 		}
+		panel.add(Box.createHorizontalGlue());
 
 		return panel;
 
@@ -140,9 +139,7 @@ public class SingleMicroUnitGUI extends JPanel {
 
 		if (horizontal) {
 			box = Box.createHorizontalBox();
-			box.add(Box.createHorizontalGlue());
 			box.add(propertyComponent);
-			box.add(Box.createHorizontalGlue());
 		} else {
 			box = Box.createVerticalBox();
 			propertyComponent.setAlignmentX(0);
