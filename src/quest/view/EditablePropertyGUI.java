@@ -1,5 +1,7 @@
 package quest.view;
 
+import static javax.swing.BorderFactory.createTitledBorder;
+import static javax.swing.BoxLayout.PAGE_AXIS;
 import static quest.controller.log.QLog.MsgType.INFO;
 
 import java.awt.event.ActionListener;
@@ -11,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
 
@@ -36,12 +39,12 @@ public class EditablePropertyGUI extends JComponent {
 
 	private void createAndShowGUI() {
 		this.setOpaque(false);
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		setBorder(BorderFactory.createTitledBorder(this.prop.getName()));
+		setLayout(new BoxLayout(this, PAGE_AXIS));
+		setBorder(createTitledBorder(this.prop.getName()));
 		if (this.prop.getOnValue() == null && this.prop.getOffValue() == null) {
 			final JCheckBox checkbox = new JCheckBox();
 			final ButtonModel bm = checkbox.getModel();
-
+			setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			checkbox.setOpaque(false);
 			ActionListener al = (e) -> {
 				SwingUtilities.invokeLater(() -> {
@@ -72,6 +75,10 @@ public class EditablePropertyGUI extends JComponent {
 
 			Box innerBox = Box.createVerticalBox();
 			innerBox.add(Box.createHorizontalGlue());
+			JLabel nameLabel = new JLabel(this.prop.getName());
+			nameLabel.setAlignmentX(.5f);
+			checkbox.setAlignmentX(.5f);
+			innerBox.add(nameLabel);
 			innerBox.add(checkbox);
 			innerBox.add(Box.createHorizontalGlue());
 			innerBox.setAlignmentY(0);

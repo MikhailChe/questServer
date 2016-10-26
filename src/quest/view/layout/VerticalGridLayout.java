@@ -60,8 +60,6 @@ public class VerticalGridLayout implements LayoutManager {
 				int nrows = (ncomponents + ncols - 1) / ncols;
 				totalComponentsWidth = ncols * width + (ncols - 1) * this.hgap;
 				totalComponentsHeight = nrows * height + (nrows - 1) * this.vgap;
-				System.out.println("MINER: maxWidth: " + width + ", ncomp: " + ncomponents + ", ncols: " + ncols
-						+ ", nrows: " + nrows);
 			}
 			return new Dimension(insets.left + insets.right + totalComponentsWidth,
 					insets.top + insets.bottom + totalComponentsHeight);
@@ -99,9 +97,6 @@ public class VerticalGridLayout implements LayoutManager {
 					ncols = 1;
 				}
 				nrows = (ncomponents + ncols - 1) / ncols;
-				System.out.println("maxWidth: " + maxComponentWidth + ", ncomp: " + ncomponents + ", ncols: " + ncols
-						+ ", nrows: " + nrows);
-
 			}
 			int totalGapsWidth = (ncols - 1) * this.hgap;
 			int widthWOInsets = parent.getWidth() - (insets.left + insets.right);

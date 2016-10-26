@@ -3,11 +3,15 @@ package quest.controller;
 import static quest.controller.log.QLog.MsgType.ERROR;
 import static quest.controller.log.QLog.MsgType.INFO;
 
+import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.bind.JAXB;
@@ -36,10 +40,9 @@ public class QuestStarter {
 		final QLog LOG = QLog.inst();
 		QuestXML quest = null;
 
-		try (InputStream stream = QuestStarter.class.getResourceAsStream("quest.xml");) {
+		try (InputStream stream = new FileInputStream(new File("quest.xml"))) {
 			quest = JAXB.unmarshal(stream, QuestXML.class);
 			LOG.print("Конфигурация квеста " + quest + " загружена.", INFO);
-			// JAXB.marshal(quest, new File("questburg.xml"));
 		} catch (Exception e) {
 			LOG.print("Не смог загрузить конфигурацию квеста: " + e.getLocalizedMessage(), ERROR);
 			return;
@@ -61,6 +64,11 @@ public class QuestStarter {
 			new Thread(udpServer).start();
 		} catch (SocketException e) {
 			LOG.print("Не смог запустить сервер контроллеров" + e.getLocalizedMessage(), ERROR);
+			try {
+				JOptionPane.showMessageDialog(null, "Не удалось запустить сервер контроллеров.\nЗавершение работы.");
+			} catch (HeadlessException headless) {
+			}
+			System.exit(0);
 		}
 		Mainframe frame = new Mainframe(quest.toString());
 		// frame.setContentPane(new MCULists(quest.units));

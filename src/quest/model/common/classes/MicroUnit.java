@@ -13,6 +13,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -54,7 +55,7 @@ public class MicroUnit implements InputByteProcessor {
 	}
 
 	public void initialize() {
-		QLog.inst().print("Запрос данных от микроконтроллера " + this.getName() + " " + this.getAddress(), INFO);
+		QLog.inst().print("Запрос всех данных от микроконтроллера " + this.getName() + " " + this.getAddress(), INFO);
 		send(datagramForData(0, false, new byte[] {}));
 	}
 
@@ -147,17 +148,17 @@ public class MicroUnit implements InputByteProcessor {
 
 	public void requestRemoteUpdate(int address, boolean o) {
 		send(datagramForData(address, true, o));
-		initialize();
+		SwingUtilities.invokeLater(this::initialize);
 	}
 
 	public void requestRemoteUpdate(int address, byte o) {
 		send(datagramForData(address, true, o));
-		initialize();
+		SwingUtilities.invokeLater(this::initialize);
 	}
 
 	public void requestRemoteUpdate(int address, short o) {
 		send(datagramForData(address, true, o));
-		initialize();
+		SwingUtilities.invokeLater(this::initialize);
 	}
 
 	protected DatagramPacket datagramForData(int perifiral, boolean write, byte[] data) {
@@ -216,7 +217,8 @@ public class MicroUnit implements InputByteProcessor {
 			if (QuestStarter.udpServer.socket != null) {
 				try {
 					QuestStarter.udpServer.socket.send(p);
-					QLog.inst().print("Отправлен UDP: " + p.getSocketAddress(), INFO);
+					QLog.inst().print("Отправлен UDP: " + p.getSocketAddress() + ", " + new PacketData(p.getData()),
+							INFO);
 				} catch (IOException e) {
 					QLog.inst().print("Не получилось отправить UDP пакет:" + e.getLocalizedMessage(), ERROR);
 				}
