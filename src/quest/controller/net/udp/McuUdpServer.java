@@ -51,7 +51,7 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 			try {
 				this.socket.receive(inputPacket);
 				LOG.print("Пришел пакет от " + inputPacket.getSocketAddress() + ", размер " + inputPacket.getLength()
-						+ "б", INFO);
+						+ " байт", INFO);
 				Consumer<byte[]> consumer = this.services.get(inputPacket.getSocketAddress());
 				if (consumer != null) {
 					LOG.print("Знаю кому передать пакет, всё нормально", INFO);

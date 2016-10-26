@@ -86,7 +86,7 @@ public class UneditablePropertyGUI extends JComponent {
 			setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 			{
 				{
-					label.setAlignmentX(1f);
+					label.setAlignmentX(0f);
 					label.setAlignmentY(.5f);
 					add(label);
 				}

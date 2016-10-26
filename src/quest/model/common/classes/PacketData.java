@@ -57,4 +57,9 @@ public class PacketData {
 		return out;
 	}
 
+	@Override
+	public String toString() {
+		return "периф-аддр: " + this.perifiral + ", " + (this.write ? "запись" : "чтение") + " "
+				+ Arrays.toString(this.data);
+	}
 }

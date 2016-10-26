@@ -1,10 +1,17 @@
 package quest.view;
 
+import static javax.swing.BorderFactory.createCompoundBorder;
+import static javax.swing.BorderFactory.createEmptyBorder;
+import static javax.swing.BorderFactory.createTitledBorder;
+import static javax.swing.BoxLayout.PAGE_AXIS;
+import static javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION;
+import static javax.swing.border.TitledBorder.DEFAULT_POSITION;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -31,8 +38,9 @@ public class SingleMicroUnitGUI extends JPanel {
 	}
 
 	public void createAndShowGUI() {
-		setBorder(BorderFactory.createTitledBorder(this.unit.getName()));
-		BoxLayout layout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+		setBorder(createTitledBorder(null, this.unit.getName(), DEFAULT_JUSTIFICATION, DEFAULT_POSITION,
+				UIManager.getFont("TitledBorder.font").deriveFont(Font.BOLD)));
+		BoxLayout layout = new BoxLayout(this, PAGE_AXIS);
 		setLayout(layout);
 		add(this.gui);
 
@@ -45,7 +53,7 @@ public class SingleMicroUnitGUI extends JPanel {
 
 	public static JComponent getComponentList(MicroUnit unit) {
 		final JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		panel.setLayout(new BoxLayout(panel, PAGE_AXIS));
 
 		for (int i = 0; i < unit.group.size(); i++) {
 			PropertyGroup group = unit.group.get(i);
@@ -64,7 +72,7 @@ public class SingleMicroUnitGUI extends JPanel {
 						if (o instanceof Boolean) {
 							Boolean b = (Boolean) o;
 							if (b) {
-								panel.setBackground(Color.YELLOW);
+								panel.setBackground(new Color(64, 192, 64));
 							} else {
 								panel.setBackground(UIManager.getColor("panel.background"));
 							}
@@ -90,8 +98,7 @@ public class SingleMicroUnitGUI extends JPanel {
 			break;
 		}
 		if (group.name != null && !group.name.isEmpty()) {
-			panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(group.name),
-					BorderFactory.createEmptyBorder(8, 8, 8, 8)));
+			panel.setBorder(createCompoundBorder(createTitledBorder(group.name), createEmptyBorder(8, 8, 8, 8)));
 		}
 		for (int i = 0; i < group.group.size(); i++) {
 			PropertyGroup grp = group.group.get(i);
@@ -138,7 +145,7 @@ public class SingleMicroUnitGUI extends JPanel {
 			box.add(Box.createHorizontalGlue());
 		} else {
 			box = Box.createVerticalBox();
-			box.add(Box.createHorizontalGlue());
+			propertyComponent.setAlignmentX(0);
 			box.add(propertyComponent);
 			box.add(Box.createHorizontalGlue());
 		}

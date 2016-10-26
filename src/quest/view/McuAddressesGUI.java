@@ -1,6 +1,7 @@
 package quest.view;
 
 import static java.awt.Color.GREEN;
+import static quest.controller.log.QLog.MsgType.INFO;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -81,16 +82,22 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 			try {
 				addressField.setText(new InetSocketAddressXmlAdapter().marshal(unit.getAddress()));
 			} catch (Exception e) {
-				QLog.inst().print(e.getLocalizedMessage(), MsgType.ERROR);
+				QLog.inst().print(
+						"Неверный адрес в конфигурации устройства " + unit.getName() + ": " + e.getLocalizedMessage(),
+						MsgType.ERROR);
 			}
 
 			final Runnable unitAddressUpdater = () -> {
 				try {
 					unit.setAddress(new InetSocketAddressXmlAdapter().unmarshal(addressField.getText()));
-					QLog.inst().print(unit.getAddress().toString(), MsgType.INFO);
+					QLog.inst().print(
+							"Обновил адрес устройства " + unit.getName() + ": " + unit.getAddress().toString(),
+							MsgType.INFO);
 					addressField.setBackground(Color.WHITE);
 				} catch (Exception e) {
-					QLog.inst().print(e.getLocalizedMessage(), MsgType.ERROR);
+					QLog.inst().print(
+							"Неверный адрес устроства " + unit.getName() + ". Ошибка: " + e.getLocalizedMessage(),
+							MsgType.ERROR);
 					addressField.setBackground(new Color(255, 128, 128));
 				}
 			};
@@ -123,16 +130,19 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 					final AtomicInteger counter = new AtomicInteger(INIT_RETRY_TIMES);
 					final Timer retryInitTimer = new Timer(INIT_RETRY_DELAY_MS, null);
 					retryInitTimer.addActionListener((retryInitActionEvent) -> {
-						QLog.inst().print("Повторяем инициализацию", MsgType.INFO);
 
 						int currentCtr = counter.getAndDecrement();
 						if (currentCtr <= 0) {
+							QLog.inst().print("Ошибка инициалиазации устройства " + unit.getName() + ".", INFO);
+
 							retryInitTimer.stop();
 							initLabel.setText("Инициализация - ОШИБКА");
 							initLabel.setForeground(Color.RED);
 							anyErrorsFlag.set(true);
 							controllersCount.incrementAndGet();
 						} else {
+							QLog.inst().print("Повторня инициализация устройства " + unit.getName() + ". Осталось "
+									+ currentCtr + " попытки(а).", INFO);
 							unit.initialize();
 							initLabel.setText("Инициализация - " + (currentCtr));
 						}
@@ -143,6 +153,7 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 					final PropertyChangeListener pcl = new PropertyChangeListener() {
 						@Override
 						public void propertyChange(PropertyChangeEvent evt) {
+							QLog.inst().print("Успешная инициализация устройства " + unit.getName(), INFO);
 							initLabel.setText("Инициализация - ОК");
 							initLabel.setForeground(GREEN);
 							unit.removePropertyChangeListener(this);

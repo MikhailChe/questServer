@@ -3,9 +3,9 @@
     <MCUs>
         <units>
             <name>Спортивные кольца</name>
-            <innerAddress>192.168.250.191:1024</innerAddress>
+            <innerAddress>127.0.0.1:1024</innerAddress>
             <group align="VERTICAL" name="">
-				<group align="HORIZONTAL" name="">
+				<group align="VERTICAL" name="">
 					<group align="VERTICAL" name="Кольцо 1">
 						<property>
 							<address>1</address>
@@ -15,7 +15,7 @@
 						</property>
 						<property>
 							<address>2</address>
-							<name>Есть нужный вес 1</name>
+							<name>40 кг</name>
 							<type>java.lang.Boolean</type>
 							<editable>false</editable>
 						</property>
@@ -29,7 +29,7 @@
 						</property>
 						<property>
 							<address>4</address>
-							<name>Есть нужный вес 2</name>
+							<name>40 кг</name>
 							<type>java.lang.Boolean</type>
 							<editable>false</editable>
 						</property>
@@ -149,70 +149,54 @@
 						<editable>false</editable>
 					</property>
                 </group>
-				<group align="HORIZONTAL" name="">
+				<group align="HORIZONTAL" name="Задвижка открыта">
 					<property>
 						<address>2</address>
-						<name>Задвижка 1</name>
+						<name>1</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 					<property>
 						<address>3</address>
-						<name>Задвижка 2</name>
+						<name>2</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 					<property>
 						<address>4</address>
-						<name>Задвижка 3</name>
+						<name>3</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 					<property>
 						<address>5</address>
-						<name>Задвижка 4</name>
+						<name>4</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 					<property>
 						<address>6</address>
-						<name>Задвижка 5</name>
+						<name>5</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 					<property>
 						<address>7</address>
-						<name>Задвижка 6</name>
+						<name>6</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 					<property>
 						<address>8</address>
-						<name>Задвижка 7</name>
+						<name>7</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 					<property>
 						<address>9</address>
-						<name>Задвижка 8</name>
+						<name>8</name>
 						<type>java.lang.Boolean</type>
 						<editable>true</editable>
-						<onValue>Отк.</onValue>
-						<offValue>Закр.</offValue>
 					</property>
 				</group>
 				<property hidden="true" keyValue="true">
@@ -367,7 +351,7 @@
             <group align="VERTICAL" name="">
                 <property>
                     <address>1</address>
-                    <name>Змейка вставлена</name>
+                    <name>Вставлена</name>
                     <type>java.lang.Boolean</type>
                     <editable>false</editable>
                 </property>
@@ -443,31 +427,13 @@
 				</property>
             </group>
         </units>
-		<units>
-            <name>Храп Бугимена</name>
-            <innerAddress>192.168.243.2:1024</innerAddress>
-            <group align="HORIZONTAL" name="">
-                <property>
-                    <address>1</address>
-                    <name>Храп Бугимена</name>
-                    <type>java.lang.Boolean</type>
-                    <editable>true</editable>
-                    <offValue>Включен</offValue>
-                    <onValue>Выключен</onValue>
-                </property>
-				<property hidden="true" keyValue="true">
-					<address>254</address>
-					<type>java.lang.Boolean</type>
-				</property>
-            </group>
-        </units>
         <units>
             <name>Руна и цветок</name>
             <innerAddress>192.168.243.2:1024</innerAddress>
             <group align="VERTICAL" name="">
                 <property>
                     <address>1</address>
-                    <name>Руна вставлена</name>
+                    <name>Вставлена</name>
                     <type>java.lang.Boolean</type>
                     <editable>false</editable>
                 </property>
@@ -486,12 +452,12 @@
             </group>
         </units>
         <units>
-            <name>Цветок в клетке</name>
+            <name>Цветок в горшке</name>
             <innerAddress>192.168.243.2:1024</innerAddress>
             <group align="VERTICAL" name="">
                 <property>
                     <address>1</address>
-                    <name>Цветок вставлен</name>
+                    <name>Вставлен</name>
                     <type>java.lang.Boolean</type>
                     <editable>false</editable>
                 </property>
@@ -510,18 +476,18 @@
             </group>
         </units>
         <units>
-            <name>Кольцо с Рэдом</name>
+            <name>Рэд и кольцо</name>
             <innerAddress>192.168.250.192:1024</innerAddress>
             <group align="VERTICAL" name="">
                 <property>
                     <address>1</address>
-                    <name>Рэд в кольце</name>
+                    <name>В кольце</name>
                     <type>java.lang.Boolean</type>
                     <editable>false</editable>
                 </property>
                 <property>
                     <address>2</address>
-                    <name>Выход из квеста</name>
+                    <name>Выход</name>
                     <type>java.lang.Boolean</type>
                     <editable>true</editable>
                     <offValue>Открыт</offValue>
