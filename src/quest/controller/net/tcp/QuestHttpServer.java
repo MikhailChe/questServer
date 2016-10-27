@@ -31,7 +31,7 @@ import quest.controller.QuestStarter;
 import quest.controller.log.QLog;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.fields.Property;
-import quest.model.quest1.QuestXML;
+import quest.model.quest.QuestXML;
 
 public class QuestHttpServer {
 	public static void main(String[] args) throws UnknownHostException, IOException {

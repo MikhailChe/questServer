@@ -1,4 +1,4 @@
-package quest.model.quest1;
+package quest.model.quest;
 
 import java.util.ArrayList;
 import java.util.List;
