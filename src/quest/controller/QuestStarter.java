@@ -20,7 +20,7 @@ import quest.controller.log.QLog;
 import quest.controller.net.tcp.QuestHttpServer;
 import quest.controller.net.udp.McuUdpServer;
 import quest.model.common.classes.MicroUnit;
-import quest.model.quest1.QuestXML;
+import quest.model.quest.QuestXML;
 import quest.view.Mainframe;
 import quest.view.McuAddressesGUI;
 
