@@ -102,7 +102,19 @@ public class SingleMicroUnitGUI extends JPanel {
 		}
 		for (int i = 0; i < group.group.size(); i++) {
 			PropertyGroup grp = group.group.get(i);
-			JComponent forGroup = getComponentForGroup(unit, grp, (i == group.group.size() - 1) && last);
+			JComponent forGroup = null;
+			switch (grp.style) {
+			default:
+			case div:
+				forGroup = getComponentForGroup(unit, grp, (i == group.group.size() - 1) && last);
+				break;
+			case table:
+				forGroup = getComponentForTableGroup(unit, grp);
+				break;
+			}
+			if (forGroup == null) {
+				continue;
+			}
 			forGroup.setAlignmentX(0f);
 			forGroup.setAlignmentY(0f);
 			panel.add(forGroup);
@@ -124,6 +136,14 @@ public class SingleMicroUnitGUI extends JPanel {
 
 		return panel;
 
+	}
+
+	private static JComponent getComponentForTableGroup(MicroUnit unit, PropertyGroup grp) {
+		Table table = new Table(unit, grp);
+		Box box = Box.createHorizontalBox();
+		box.add(table);
+		box.add(Box.createHorizontalGlue());
+		return box;
 	}
 
 	public static JComponent getComponentForProperty(MicroUnit unit, Property prop, boolean horizontal, boolean last) {

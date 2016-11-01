@@ -14,11 +14,18 @@ public class PropertyGroup {
 		HORIZONTAL, VERTICAL
 	}
 
+	public static enum Style {
+		div, table
+	}
+
 	@XmlAttribute
 	public Align align = Align.HORIZONTAL;
 
 	@XmlAttribute
 	public String name = "Group name";
+
+	@XmlAttribute
+	public Style style = Style.div;
 
 	@XmlElement(nillable = false)
 	public List<Property> property = new ArrayList<>();
@@ -35,4 +42,8 @@ public class PropertyGroup {
 		return props;
 	}
 
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }

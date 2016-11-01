@@ -58,7 +58,7 @@ public class QuestHttpServer {
 						return new ArrayList<>();
 					});
 				} catch (UnsupportedEncodingException e) {
-					QLog.inst().print("Неудачная попытка кодирования декодирования данных от клиента.", WARNING);
+					QLog.inst().print("Неудачная попытка кодирования-декодирования данных от клиента.", WARNING);
 				}
 			} else if (keyval.length == 2) {
 				String key = keyval[0];
@@ -76,9 +76,8 @@ public class QuestHttpServer {
 						return v;
 					});
 				} catch (UnsupportedEncodingException e) {
-					QLog.inst().print(e.getLocalizedMessage(), WARNING);
+					QLog.inst().print("Неудачная попытка кодирования-декодирования данных от клиента.", WARNING);
 				}
-
 			}
 		}
 
@@ -102,7 +101,7 @@ public class QuestHttpServer {
 				}
 
 				path = "www" + path;
-				QLog.inst().print("Рутовый путь: " + path, INFO);
+				QLog.inst().print("Отдаю файл из корневой директории: " + path, INFO);
 
 				try {
 					String checkPath = path;
@@ -141,7 +140,8 @@ public class QuestHttpServer {
 		this.httpServer.createContext("/api", new ProHandler() {
 			@Override
 			public void handlePro(HttpExchange t) throws IOException {
-				QLog.inst().print("API: " + t.getHttpContext().getPath() + ", " + t.getRequestURI().toString(), INFO);
+				QLog.inst().print("Отдаю ответ на API запрос: " + t.getHttpContext().getPath() + ", "
+						+ t.getRequestURI().toString(), INFO);
 				t.getResponseHeaders().add("Content-type", "application/json; charset=utf-8");
 
 				StringBuilder sb = new StringBuilder();
@@ -167,55 +167,26 @@ public class QuestHttpServer {
 		});
 
 		for (MicroUnit unit : quest.units) {
-			String unitName = null;
 			try {
-				unitName = new URI(unit.getName().replaceAll(" ", "%20")).getPath();
-			} catch (URISyntaxException e) {
-				QLog.inst().print("Пытался преобразовать пробел в %20, но ничего не получилось.", WARNING);
-			}
-			System.out.println(unitName);
-			this.httpServer.createContext("/api/" + unitName, new ProHandler() {
-				@Override
-				public void handlePro(HttpExchange t) throws IOException {
-					QLog.inst().print("Unit: " + t.getHttpContext().getPath(), INFO);
-
-					t.getResponseHeaders().add("Content-type", "application/json; charset=utf-8");
-
-					StringBuilder sb = new StringBuilder();
-					sb.append('{');
-					{
-						sb.append("\"units\":[");
-
-						sb.append(unit.getProperties().stream().map(Property::getName).map(s -> "\"" + s + "\"")
-								.collect(Collectors.joining(",")));
-
-						sb.append(']');
-					}
-					sb.append('}');
-
-					String response = sb.toString();
-					byte[] output = response.toString().getBytes(StandardCharsets.UTF_8);
-
-					t.sendResponseHeaders(200, output.length);
-					t.getResponseBody().write(output);
-					t.close();
-				}
-			});
-			for (Property prop : unit.getProperties()) {
-				this.httpServer.createContext("/api/" + unitName + "/" + prop.getName(), new ProHandler() {
+				final String unitName = new URI(unit.getName().replaceAll(" ", "%20")).getPath();
+				System.out.println(unitName);
+				this.httpServer.createContext("/api/" + unitName, new ProHandler() {
 					@Override
 					public void handlePro(HttpExchange t) throws IOException {
-						QLog.inst().print("Property: " + t.getHttpContext().getPath(), INFO);
+						QLog.inst().print(
+								"Отдаю список параметров для " + unitName + ": " + t.getHttpContext().getPath(), INFO);
 
 						t.getResponseHeaders().add("Content-type", "application/json; charset=utf-8");
 
 						StringBuilder sb = new StringBuilder();
 						sb.append('{');
 						{
-							sb.append("\"" + prop.getName() + "\":");
+							sb.append("\"units\":[");
 
-							sb.append("\"" + prop.getValue() + "\"");
+							sb.append(unit.getProperties().stream().map(Property::getName).map(s -> "\"" + s + "\"")
+									.collect(Collectors.joining(",")));
 
+							sb.append(']');
 						}
 						sb.append('}');
 
@@ -227,6 +198,38 @@ public class QuestHttpServer {
 						t.close();
 					}
 				});
+				for (Property prop : unit.getProperties()) {
+					this.httpServer.createContext("/api/" + unitName + "/" + prop.getName(), new ProHandler() {
+						@Override
+						public void handlePro(HttpExchange t) throws IOException {
+							QLog.inst().print("Отдаю состояние устройства " + unitName + "/" + prop.getName() + ": "
+									+ t.getHttpContext().getPath(), INFO);
+
+							t.getResponseHeaders().add("Content-type", "application/json; charset=utf-8");
+
+							StringBuilder sb = new StringBuilder();
+							sb.append('{');
+							{
+								sb.append("\"" + prop.getName() + "\":");
+
+								sb.append("\"" + prop.getValue() + "\"");
+
+							}
+							sb.append('}');
+
+							String response = sb.toString();
+							byte[] output = response.toString().getBytes(StandardCharsets.UTF_8);
+
+							t.sendResponseHeaders(200, output.length);
+							t.getResponseBody().write(output);
+							t.close();
+						}
+					});
+				}
+			} catch (URISyntaxException e) {
+				QLog.inst().print(
+						"Пытался преобразовать пробел в %20, но ничего не получилось. " + e.getLocalizedMessage(),
+						WARNING);
 			}
 		}
 		QLog.inst().print("Добавлены контексты для веб-сервера", INFO);
