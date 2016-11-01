@@ -6,6 +6,7 @@ import static quest.controller.log.QLog.MsgType.INFO;
 
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -42,35 +43,10 @@ public class EditablePropertyGUI extends JComponent {
 		setLayout(new BoxLayout(this, PAGE_AXIS));
 		if (this.prop.getOnValue() == null && this.prop.getOffValue() == null) {
 			final JCheckBox checkbox = new JCheckBox();
-			final ButtonModel bm = checkbox.getModel();
 			setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 			checkbox.setOpaque(false);
-			ActionListener al = (e) -> {
-				SwingUtilities.invokeLater(() -> {
-					this.unit.requestRemoteUpdate(this.prop.address, bm.isSelected());
-					bm.setEnabled(false);
-					bm.setRollover(true);
-					bm.setPressed(true);
-					bm.setArmed(true);
-					bm.setSelected(!bm.isSelected());
-				});
-			};
-			checkbox.addActionListener(al);
-			this.unit.addPropertyChangeListener((e) -> {
-				if (this.prop.getValue() != null) {
-					if (this.prop.getValue() instanceof Boolean) {
-						if (this.prop.getValue().equals(true)) {
-							bm.setSelected(true);
-						} else {
-							bm.setSelected(false);
-						}
-						bm.setRollover(false);
-						bm.setPressed(false);
-						bm.setArmed(false);
-						bm.setEnabled(true);
-					}
-				}
-			});
+
+			setCheckboxListener(checkbox, this.unit, this.prop);
 
 			JLabel nameLabel = new JLabel(this.prop.getName());
 
@@ -137,5 +113,37 @@ public class EditablePropertyGUI extends JComponent {
 
 			add(verticalGlueBox);
 		}
+	}
+
+	public static void setCheckboxListener(AbstractButton checkbox, MicroUnit unit, Property prop) {
+		if (checkbox == null || unit == null || prop == null)
+			return;
+		final ButtonModel bm = checkbox.getModel();
+		ActionListener al = (e) -> {
+			SwingUtilities.invokeLater(() -> {
+				unit.requestRemoteUpdate(prop.address, bm.isSelected());
+				bm.setEnabled(false);
+				bm.setRollover(true);
+				bm.setPressed(true);
+				bm.setArmed(true);
+				bm.setSelected(!bm.isSelected());
+			});
+		};
+		checkbox.addActionListener(al);
+		unit.addPropertyChangeListener((e) -> {
+			if (prop.getValue() != null) {
+				if (prop.getValue() instanceof Boolean) {
+					if (prop.getValue().equals(true)) {
+						bm.setSelected(true);
+					} else {
+						bm.setSelected(false);
+					}
+					bm.setRollover(false);
+					bm.setPressed(false);
+					bm.setArmed(false);
+					bm.setEnabled(true);
+				}
+			}
+		});
 	}
 }

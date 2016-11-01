@@ -27,7 +27,9 @@ abstract class ProHandler implements HttpHandler {
 		try {
 			handlePro(t);
 		} catch (IOException e) {
-			QLog.inst().print(e.getLocalizedMessage(), ERROR);
+			QLog.inst().print(
+					"Ошибка обработки HTTP запроса от " + t.getRequestURI().toString() + ". " + e.getLocalizedMessage(),
+					ERROR);
 		}
 	}
 

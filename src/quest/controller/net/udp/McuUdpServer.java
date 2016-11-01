@@ -31,7 +31,7 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 	public void addService(MicroUnit mcu, InputByteProcessor function) {
 		try {
 			this.services.put(mcu.getAddress(), function::processInput);
-			QLog.inst().print("Добавлен сервис: " + mcu.toString(), INFO);
+			QLog.inst().print("Добавлен UDP сервис для МК: " + mcu.toString(), INFO);
 		} catch (Exception e) {
 			QLog.inst().print("Проблемы добавления сервиса МК: " + e.getLocalizedMessage(), WARNING);
 		}
@@ -39,7 +39,6 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 
 	public <T extends MicroUnit & InputByteProcessor> void addService(T mcu) {
 		addService((MicroUnit) mcu, (InputByteProcessor) mcu);
-
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 				}
 
 			} catch (IOException e) {
-				LOG.print(("Не смог поулчить UDP сообщение: " + e.getLocalizedMessage()), MsgType.ERROR);
+				LOG.print("Не смог поулчить UDP сообщение: " + e.getLocalizedMessage(), MsgType.ERROR);
 			}
 		}
 	}

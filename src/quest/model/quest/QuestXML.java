@@ -1,8 +1,12 @@
 package quest.model.quest;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXB;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -21,5 +25,28 @@ public class QuestXML {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+
+	public static QuestXML loadXML(InputStream xml) {
+		return JAXB.unmarshal(xml, QuestXML.class);
+	}
+
+	public static QuestXML loadXML(File xml) {
+		return JAXB.unmarshal(xml, QuestXML.class);
+	}
+
+	public QuestXML saveXML(File xml) {
+		JAXB.marshal(this, xml);
+		return this;
+	}
+
+	public QuestXML saveXML(OutputStream xml) {
+		JAXB.marshal(this, xml);
+		return this;
+	}
+
+	public QuestXML saveXML() {
+		this.saveXML(new File("quest.xml"));
+		return this;
 	}
 }

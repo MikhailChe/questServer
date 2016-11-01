@@ -14,7 +14,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.xml.bind.JAXB;
 
 import quest.controller.log.QLog;
 import quest.controller.net.tcp.QuestHttpServer;
@@ -30,18 +29,19 @@ public class QuestStarter {
 	public static McuUdpServer udpServer;
 
 	public static void main(String... strings) {
+		final QLog LOG = QLog.inst();
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
+			LOG.print("Не смог изменить вид интерфейса на системный. " + e.getLocalizedMessage(), INFO);
 		}
 
-		final QLog LOG = QLog.inst();
 		QuestXML quest = null;
 
 		try (InputStream stream = new FileInputStream(new File("quest.xml"))) {
-			quest = JAXB.unmarshal(stream, QuestXML.class);
+			quest = QuestXML.loadXML(stream);
 			LOG.print("Конфигурация квеста " + quest + " загружена.", INFO);
 		} catch (Exception e) {
 			LOG.print("Не смог загрузить конфигурацию квеста: " + e.getLocalizedMessage(), ERROR);
@@ -51,8 +51,8 @@ public class QuestStarter {
 		try {
 			QuestHttpServer httpServer = new QuestHttpServer(quest);
 			httpServer.start();
-		} catch (IOException e1) {
-			QLog.inst().print(e1.getLocalizedMessage(), ERROR);
+		} catch (IOException e) {
+			QLog.inst().print("Не удалось запустить HTTP сервер. " + e.getLocalizedMessage(), ERROR);
 		}
 
 		LOG.print("Теперь запустим UDP сервер", INFO);
@@ -72,7 +72,7 @@ public class QuestStarter {
 		}
 		Mainframe frame = new Mainframe(quest.toString());
 		// frame.setContentPane(new MCULists(quest.units));
-		frame.setContentPane(new McuAddressesGUI(quest.units, frame));
+		frame.setContentPane(new McuAddressesGUI(quest, quest.units, frame));
 		frame.showMe();
 		// updateAllLoop(quest.units);
 	}

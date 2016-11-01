@@ -41,12 +41,7 @@ public class UneditablePropertyGUI extends JComponent {
 			AbstractButton cb = new JCheckBox();
 			this.component = (cb);
 			this.component.setEnabled(false);
-			unit.addPropertyChangeListener((e) -> {
-				if (prop.getValue() != null)
-
-					if (prop.getValue() instanceof Boolean)
-						cb.setSelected((boolean) prop.getValue());
-			});
+			setCheckboxListener(cb, unit, prop);
 		} else {
 			JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, Short.MIN_VALUE, Short.MAX_VALUE, 1));
 			this.component = (spinner);
@@ -61,6 +56,17 @@ public class UneditablePropertyGUI extends JComponent {
 		}
 
 		SwingUtilities.invokeLater(this::createAndShowGUI);
+	}
+
+	public static void setCheckboxListener(AbstractButton cb, MicroUnit unit, Property prop) {
+		if (cb == null || unit == null || prop == null)
+			return;
+		unit.addPropertyChangeListener((e) -> {
+			if (prop.getValue() != null)
+
+				if (prop.getValue() instanceof Boolean)
+					cb.setSelected((boolean) prop.getValue());
+		});
 	}
 
 	private void createAndShowGUI() {

@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<questXML name="Фантазёры">
+    <MCUs>
+        <units>
+            <name>Спортивные кольца</name>
+            <innerAddress>127.0.0.1:1024</innerAddress>
+            <group align="VERTICAL" name="">
+				<group align="VERTICAL" name="" style="table">
+					<group align="VERTICAL" name="Кольцо 1">
+						<property>
+							<address>1</address>
+							<name>Висят</name>
+							<type>java.lang.Boolean</type>
+							<editable>false</editable>
+						</property>
+						<property>
+							<address>2</address>
+							<name>40 кг</name>
+							<type>java.lang.Boolean</type>
+							<editable>false</editable>
+						</property>
+					</group>
+					<group align="VERTICAL" name="Кольцо 2">
+						<property>
+							<address>3</address>
+							<name>Висят</name>
+							<type>java.lang.Boolean</type>
+							<editable>false</editable>
+						</property>
+						<property>
+							<address>4</address>
+							<name>40 кг</name>
+							<type>java.lang.Boolean</type>
+							<editable>false</editable>
+						</property>
+					</group>
+				</group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>5</address>
+						<name>Антресоль</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<offValue>Открыта</offValue>
+						<onValue>Закрыта</onValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Будильник</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <group align="VERTICAL" name="">
+                <group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>Звонок выставлен</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>2</address>
+						<name>Время выставлено</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">>
+					<property>
+						<address>3</address>
+						<name>Тайник в машинке</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<onValue>Открыт</onValue>
+						<offValue>Закрыт</offValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Ступени лестницы</name>
+            <innerAddress>192.168.243.3:1024</innerAddress>
+            <group align="VERTICAL" name="">
+				<group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>Ступень 1</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>2</address>
+						<name>Ступень 3</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>3</address>
+						<name>Ступень 5</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>4</address>
+						<name>Ступень 2</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>5</address>
+						<name>Ступень 8 (рука)</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+                </group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>6</address>
+						<name>Ставни</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<onValue>Открыты</onValue>
+						<offValue>Закрыты</offValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+		<units>
+            <name>Тайник в матрас</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <group align="VERTICAL" name="">
+                <group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>Прыгнули раз</name>
+						<type>java.lang.Short</type>
+						<editable>false</editable>
+					</property>
+                </group>
+				<group align="HORIZONTAL" name="Задвижка открыта">
+					<property>
+						<address>2</address>
+						<name>1</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+					<property>
+						<address>3</address>
+						<name>2</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+					<property>
+						<address>4</address>
+						<name>3</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+					<property>
+						<address>5</address>
+						<name>4</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+					<property>
+						<address>6</address>
+						<name>5</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+					<property>
+						<address>7</address>
+						<name>6</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+					<property>
+						<address>8</address>
+						<name>7</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+					<property>
+						<address>9</address>
+						<name>8</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Кубики</name>
+            <innerAddress>192.168.243.4:1024</innerAddress>
+            <group align="VERTICAL" name="">
+				<group align="HORIZONTAL" name="">
+					<property>
+						<address>1</address>
+						<name>В</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>2</address>
+						<name>Е</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>3</address>
+						<name>Ч</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>4</address>
+						<name>Н</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>5</address>
+						<name>О</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>6</address>
+						<name>С</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>7</address>
+						<name>Т</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>8</address>
+						<name>Ь</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>9</address>
+						<name>Небылица</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<onValue>Открыта</onValue>
+						<offValue>Закрыта</offValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Азбука</name>
+            <innerAddress>192.168.243.4:1024</innerAddress>
+            <group align="VERTICAL" name="">
+                <group align="HORIZONTAL" name="">
+					<property>
+						<address>1</address>
+						<name>Н</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>2</address>
+						<name>Е</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>3</address>
+						<name>Б</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>4</address>
+						<name>Ы</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>5</address>
+						<name>Л</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>6</address>
+						<name>И</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>7</address>
+						<name>Ц</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>8</address>
+						<name>А</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>9</address>
+						<name>Дверь в фэнтези</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<offValue>Открыта</offValue>
+						<onValue>Закрыта</onValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+		<units>
+            <name>Змейка и дупло</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <group align="VERTICAL" name="">
+				<group align="VERTICAL" name="">
+                <property>
+                    <address>1</address>
+                    <name>Вставлена</name>
+                    <type>java.lang.Boolean</type>
+                    <editable>false</editable>
+                </property>
+				</group>
+				<group align="VERTICAL" name="">
+                <property>
+                    <address>2</address>
+                    <name>Дупло</name>
+                    <type>java.lang.Boolean</type>
+                    <editable>true</editable>
+                    <offValue>Открыто</offValue>
+                    <onValue>Закрыто</onValue>
+                </property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Мухи и свиток</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <group align="VERTICAL" name="">
+                <group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>Муха 1</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+					<property>
+						<address>2</address>
+						<name>Муха 2</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>3</address>
+						<name>Свиток</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<onValue>Развёрнут</onValue>
+						<offValue>Свёрнут</offValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Стук в шкафу</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <group align="VERTICAL" name="">
+                <group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>Постучали</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">	
+					<property>
+						<address>2</address>
+						<name>Дверь в зону Бугимена</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<onValue>Закрыта</onValue>
+						<offValue>Открыта</offValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Руна и цветок</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <group align="VERTICAL" name="">
+				<group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>Вставлена</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>2</address>
+						<name>Цветок</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<offValue>Свободен</offValue>
+						<onValue>Зафиксирован</onValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Цветок в горшке</name>
+            <innerAddress>192.168.243.2:1024</innerAddress>
+            <group align="VERTICAL" name="">
+				<group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>Вставлен</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>2</address>
+						<name>Клетка с Рэдом</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<offValue>Закрыта</offValue>
+						<onValue>Открыта</onValue>
+					</property>
+				</group>
+				<property hidden="true" keyValue="true">
+					<address>254</address>
+					<type>java.lang.Boolean</type>
+				</property>
+            </group>
+        </units>
+        <units>
+            <name>Рэд и кольцо</name>
+            <innerAddress>192.168.250.192:1024</innerAddress>
+            <group align="VERTICAL" name="">
+				<group align="VERTICAL" name="">
+					<property>
+						<address>1</address>
+						<name>В кольце</name>
+						<type>java.lang.Boolean</type>
+						<editable>false</editable>
+					</property>
+				</group>
+				<group align="VERTICAL" name="">
+					<property>
+						<address>2</address>
+						<name>Выход</name>
+						<type>java.lang.Boolean</type>
+						<editable>true</editable>
+						<offValue>Открыт</offValue>
+						<onValue>Закрыт</onValue>
+					</property>
+					<property hidden="true" keyValue="true">
+						<address>254</address>
+						<type>java.lang.Boolean</type>
+					</property>
+				</group>
+            </group>
+        </units>
+    </MCUs>
+</questXML>

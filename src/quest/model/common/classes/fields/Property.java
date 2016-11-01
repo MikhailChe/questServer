@@ -35,7 +35,7 @@ public class Property implements Comparable<Property> {
 		this((byte) 0, "Стд. свойство", null, false);
 	}
 
-	Property(byte address, String name, Object val, boolean editable) {
+	public Property(byte address, String name, Object val, boolean editable) {
 		this.address = address;
 		this.name = name;
 		this.val = val;

@@ -34,11 +34,13 @@ import quest.controller.log.QLog;
 import quest.controller.log.QLog.MsgType;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.MicroUnit.InetSocketAddressXmlAdapter;
+import quest.model.quest.QuestXML;
 
 public class McuAddressesGUI extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -1842318840231517558L;
 
-	List<MicroUnit> units;
+	final QuestXML questInstance;
+	final List<MicroUnit> units;
 
 	Mainframe frame;
 	JPanel boxList;
@@ -51,8 +53,10 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 
 	private static final int CELL_HEIGHT = 30;
 
-	public McuAddressesGUI(List<MicroUnit> units, Mainframe frame) {
+	public McuAddressesGUI(QuestXML questInstance, List<MicroUnit> units, Mainframe frame) {
 		super(new BorderLayout(4, 4));
+
+		this.questInstance = questInstance;
 		this.units = units;
 		this.frame = frame;
 		this.boxList = new JPanel();
@@ -94,9 +98,11 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 			final Runnable unitAddressUpdater = () -> {
 				try {
 					unit.setAddress(new InetSocketAddressXmlAdapter().unmarshal(addressField.getText()));
+
 					QLog.inst().print(
 							"Обновил адрес устройства " + unit.getName() + ": " + unit.getAddress().toString(),
 							MsgType.INFO);
+					this.questInstance.saveXML();
 					addressField.setBackground(UIManager.getColor("TextField.background"));
 				} catch (Exception e) {
 					QLog.inst().print(
