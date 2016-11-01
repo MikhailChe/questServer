@@ -12,7 +12,7 @@
                     <editable>false</editable>
                 </property>
                 <group align="VERTICAL" name="" style="table">
-                    <group align="VERTICAL" name="Кольцо 1" style="div">
+                    <group align="VERTICAL" name="1" style="div">
                         <property>
                             <address>1</address>
                             <name>Висят</name>
@@ -26,7 +26,7 @@
                             <editable>false</editable>
                         </property>
                     </group>
-                    <group align="VERTICAL" name="Кольцо 2" style="div">
+                    <group align="VERTICAL" name="2" style="div">
                         <property>
                             <address>3</address>
                             <name>Висят</name>

@@ -13,6 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import quest.model.common.classes.MicroUnit;
@@ -68,11 +69,15 @@ public class Table extends JComponent {
 
 		// insert category names;
 		for (int i = 0; i < categories.size(); i++) {
-			table[i + 1][0] = new JLabel(categories.get(i));
+			JLabel label = new JLabel(categories.get(i));
+			label.setHorizontalAlignment(SwingConstants.RIGHT);
+			table[i + 1][0] = label;
 		}
 		// fill in value names;
 		for (int j = 0; j < this.valueColumns.size(); j++) {
-			table[0][j + 1] = new JLabel(this.valueColumns.get(j).name);
+			JLabel label = new JLabel(this.valueColumns.get(j).name);
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			table[0][j + 1] = label;
 		}
 		// fill in checkboxes
 		for (int j = 0; j < this.valueColumns.size(); j++) {
