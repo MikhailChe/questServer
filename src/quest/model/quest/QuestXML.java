@@ -14,6 +14,14 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 import quest.model.common.classes.MicroUnit;
 
+/**
+ * Основной класс представления конфигурационного XML. Атоматически генерируется
+ * на основании XML и наоборот: XML конфигурация может быть сгенерирована по
+ * объекту этого класса
+ * 
+ * @author Mikhail
+ *
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 public class QuestXML {
 	@XmlAttribute(required = true, name = "name")

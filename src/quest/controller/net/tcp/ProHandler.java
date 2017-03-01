@@ -14,6 +14,12 @@ import com.sun.net.httpserver.HttpHandler;
 
 import quest.controller.log.QLog;
 
+/**
+ * Абстрактный класс обработчика HTTP запросов
+ * 
+ * @author Mikhail
+ *
+ */
 abstract class ProHandler implements HttpHandler {
 	Map<String, List<String>> POST;
 	Map<String, List<String>> GET;

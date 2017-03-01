@@ -19,6 +19,12 @@ import quest.controller.log.QLog.MsgType;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.ifaces.InputByteProcessor;
 
+/**
+ * Класс сервера для микроконтроллеров
+ * 
+ * @author Mikhail
+ *
+ */
 public class McuUdpServer implements Runnable, AutoCloseable {
 
 	public final DatagramSocket socket;
@@ -37,14 +43,29 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 		}
 	}
 
+	/**
+	 * Добавление подписчиков
+	 * 
+	 * @param mcu
+	 *            типа MicroUnit, который умеет обрабатывать входные байты
+	 *            (имплементирует итерфейс InputByteProcessor
+	 */
 	public <T extends MicroUnit & InputByteProcessor> void addService(T mcu) {
 		addService((MicroUnit) mcu, (InputByteProcessor) mcu);
 	}
 
+	/**
+	 * Удаление подписчиков по адресу.
+	 * 
+	 * @param addr
+	 */
 	public void removeService(InetSocketAddress addr) {
 		this.services.remove(addr);
 	}
 
+	/**
+	 * Обрабатываем приходящие UDP пакеты и раскидываем их по подписчикам
+	 */
 	@Override
 	public void run() {
 		final QLog LOG = QLog.inst();

@@ -27,6 +27,18 @@ import quest.model.common.classes.fields.Property;
 import quest.model.common.classes.fields.PropertyGroup;
 import quest.model.common.ifaces.InputByteProcessor;
 
+/**
+ * Класс микроонтроллера Хранит в себе графическое отображение внутренних
+ * элементов (генерируются автоматически при чтении основного XML), адрес и имя
+ * контретного микроконтроллера.
+ * 
+ * После того как он подписывается на оповещения от сервера, он автомагически
+ * обновляет внутренне представление об изменяемых параметрах
+ * 
+ * 
+ * @author Mikhail
+ *
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 public class MicroUnit implements InputByteProcessor {
 	@XmlElement

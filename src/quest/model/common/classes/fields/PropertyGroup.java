@@ -8,6 +8,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+/**
+ * Класс для хранения набора изменяемых параметров микроконтроллера и того как
+ * это должно выглядеть на GUI Служить в основном для изменения отображения в
+ * графическом интерфейсе Объекты класса автоматически генерируются при чтении
+ * основного XML
+ * 
+ * @author Mikhail
+ *
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 public class PropertyGroup {
 	public static enum Align {

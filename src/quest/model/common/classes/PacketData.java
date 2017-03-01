@@ -2,6 +2,14 @@ package quest.model.common.classes;
 
 import java.util.Arrays;
 
+/**
+ * Класс для конвертации адреса перефирии, режима чтения/записи и данных в набор
+ * байт для отправки на микроконтроллер и обратно. Формат посылки стандартизован
+ * и описан в ТЗ
+ * 
+ * @author Mikhail
+ *
+ */
 public class PacketData {
 
 	public byte perifiral = 0;

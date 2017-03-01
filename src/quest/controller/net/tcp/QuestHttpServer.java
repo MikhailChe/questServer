@@ -22,23 +22,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.JAXB;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
-import quest.controller.QuestStarter;
 import quest.controller.log.QLog;
 import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.fields.Property;
 import quest.model.quest.QuestXML;
 
 public class QuestHttpServer {
-	public static void main(String[] args) throws UnknownHostException, IOException {
-		QuestXML questXML = JAXB.unmarshal(QuestStarter.class.getResourceAsStream("quest.xml"), QuestXML.class);
-		new QuestHttpServer(questXML).start();
-
-	}
 
 	public static Map<String, List<String>> decodeRawQuery(String raw) {
 		if (raw == null || raw.isEmpty()) {

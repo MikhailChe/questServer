@@ -8,10 +8,17 @@ import java.net.SocketException;
 import quest.controller.net.Addresser;
 import quest.model.common.classes.PacketData;
 
+/**
+ * Маленький тестовый клиент, который претворяется контроллером. Для
+ * тестирования взаимодействий
+ * 
+ * @author Mikhail
+ *
+ */
 public class QuestMock {
 	public static void main(String[] args) {
 		try (DatagramSocket datagramSocket = new DatagramSocket(1024);) {
-			byte[] data = new PacketData((byte) 254, true, new byte[] { 0}).getBytes();
+			byte[] data = new PacketData((byte) 254, true, new byte[] { 0 }).getBytes();
 
 			try {
 				datagramSocket

@@ -10,6 +10,13 @@ import javax.xml.bind.annotation.XmlElement;
 
 import quest.controller.log.QLog;
 
+/**
+ * Класс одного свойства (изменяемый параметр) контроллера Объекты класса
+ * генерируются автоматически из XML
+ * 
+ * @author Mikhail
+ *
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 public class Property implements Comparable<Property> {
 	@XmlElement
