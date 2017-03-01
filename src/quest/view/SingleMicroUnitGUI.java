@@ -22,6 +22,13 @@ import quest.model.common.classes.MicroUnit;
 import quest.model.common.classes.fields.Property;
 import quest.model.common.classes.fields.PropertyGroup;
 
+/**
+ * Класс, который строит внешний интерфейс управляющих кнопок для одного
+ * контроллера из дерева элементов.
+ * 
+ * @author Mikhail
+ *
+ */
 public class SingleMicroUnitGUI extends JPanel {
 	private static final long serialVersionUID = -8630553082343961425L;
 
@@ -47,7 +54,6 @@ public class SingleMicroUnitGUI extends JPanel {
 		revalidate();
 		validate();
 		doLayout();
-
 	}
 
 	public static JComponent getComponentList(MicroUnit unit) {

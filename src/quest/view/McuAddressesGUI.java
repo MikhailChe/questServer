@@ -56,12 +56,13 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 
 	public McuAddressesGUI(QuestXML questInstance, List<MicroUnit> units, Mainframe frame) {
 		super(new BorderLayout(4, 4));
-
 		this.questInstance = questInstance;
 		this.units = units;
 		this.frame = frame;
+
 		this.boxList = new JPanel();
 		this.boxList.setLayout(new BoxLayout(this.boxList, BoxLayout.PAGE_AXIS));
+
 		Box boxValign = Box.createVerticalBox();
 		boxValign.add(Box.createVerticalGlue());
 		boxValign.add(this.boxList);
@@ -77,6 +78,11 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 		final AtomicInteger controllersCount = new AtomicInteger(0);
 		final AtomicBoolean anyErrorsFlag = new AtomicBoolean(false);
 
+		/*
+		 * Для каждого контроллера создаём отедльную панельку и вешаем
+		 * обработчики, которые будут изменять количество ошибочных и успешных
+		 * инициализаций.
+		 */
 		for (MicroUnit unit : this.units) {
 			final JPanel singleLine = new JPanel();
 			singleLine.setLayout(new BoxLayout(singleLine, BoxLayout.LINE_AXIS));
@@ -89,6 +95,7 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 
 			final JTextField addressField = new JTextField();
 			try {
+				// Пытаемся преобразовать адрес в строку
 				addressField.setText(new InetSocketAddressXmlAdapter().marshal(unit.getAddress()));
 			} catch (Exception e) {
 				QLog.inst().print(
@@ -194,10 +201,15 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 			this.boxList.add(Box.createRigidArea(new Dimension(4, 4)));
 			this.boxList.add(singleLine);
 		}
-		Timer startToLaunchTimer = new Timer(1000, null);
+
+		/*
+		 * В случае, если всё проинициализировалось, показывае кнопку
+		 * "продолжить" и по её нажатию запускаем основное окно с контроллерами.
+		 */
 		startButton.addActionListener((e) -> {
 			startButton.setEnabled(false);
 		});
+		Timer startToLaunchTimer = new Timer(1000, null);
 		startToLaunchTimer.addActionListener((startToLaunchTimerEvent) -> {
 			if (controllersCount.get() >= this.units.size()) {
 				if (anyErrorsFlag.get()) {

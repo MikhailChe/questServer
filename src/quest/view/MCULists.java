@@ -12,6 +12,12 @@ import javax.swing.SwingUtilities;
 import quest.model.common.classes.MicroUnit;
 import quest.view.layout.VerticalGridLayout;
 
+/**
+ * Класс-обёртка вокруг основной панели с контроллерами и кнопками управления
+ * 
+ * @author Mikhail
+ *
+ */
 public class MCULists extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -7633912783790852860L;
 	final List<MicroUnit> units;
@@ -20,10 +26,12 @@ public class MCULists extends JPanel implements Scrollable {
 	public MCULists(List<MicroUnit> units) {
 		setLayout(new VerticalGridLayout(10, 10));
 		this.units = units;
+
 		for (MicroUnit unit : units) {
 			SingleMicroUnitGUI smu = new SingleMicroUnitGUI(unit);
 			this.guiUnits.add(smu);
 		}
+
 		SwingUtilities.invokeLater(this::initAndShowGUI);
 		validate();
 	}

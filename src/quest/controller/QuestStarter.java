@@ -29,8 +29,11 @@ public class QuestStarter {
 	public static McuUdpServer udpServer;
 
 	public static void main(String... strings) {
+		// Запускаем самописный логгер
 		final QLog LOG = QLog.inst();
 
+		// Это нужно для того чтобы интерфейс выглядил в стиле той системы, на
+		// которй запущена программа
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -40,6 +43,10 @@ public class QuestStarter {
 
 		QuestXML quest = null;
 
+		LOG.print("Загружаем конфигурацию квеста из XML", INFO);
+		// Здесь захардкожен quest.xml, но при необходимости можно добавить
+		// возможность выбора между разными конфигурациями, либо захардкодить
+		// другой xml
 		try (InputStream stream = new FileInputStream(new File("quest.xml"))) {
 			quest = QuestXML.loadXML(stream);
 			LOG.print("Конфигурация квеста " + quest + " загружена.", INFO);
@@ -48,6 +55,7 @@ public class QuestStarter {
 			return;
 		}
 
+		LOG.print("Создаём сервак для веб-морды", INFO);
 		try {
 			QuestHttpServer httpServer = new QuestHttpServer(quest);
 			httpServer.start();
@@ -55,7 +63,7 @@ public class QuestStarter {
 			QLog.inst().print("Не удалось запустить HTTP сервер. " + e.getLocalizedMessage(), ERROR);
 		}
 
-		LOG.print("Теперь запустим UDP сервер", INFO);
+		LOG.print("Теперь запустим UDP сервер контроллеров квеста", INFO);
 		try {
 			udpServer = new McuUdpServer(2016);
 			for (MicroUnit unit : quest.units) {
@@ -70,20 +78,26 @@ public class QuestStarter {
 			}
 			System.exit(0);
 		}
+
+		LOG.print("Создаём основное графическое окно", INFO);
 		Mainframe frame = new Mainframe(quest.toString());
-		// frame.setContentPane(new MCULists(quest.units));
+
+		LOG.print("Показываем пользователю список адресов из XML для проверки работоспособности контроллеров", INFO);
 		frame.setContentPane(new McuAddressesGUI(quest, quest.units, frame));
 		frame.showMe();
-		// updateAllLoop(quest.units);
 	}
 
+	/**
+	 * Цикл, который каждые 10 секунд запрашивает состояние всех контроллеров на
+	 * случай если они не смогли прислать сообщение
+	 */
 	public static void updateAllLoop(List<MicroUnit> units) {
 		while (true) {
 			for (MicroUnit unit : units) {
 				unit.initialize();
 			}
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(10_000);
 			} catch (InterruptedException e) {
 				QLog.inst().print("Прерваный цикл?" + e.getLocalizedMessage(), ERROR);
 			}
