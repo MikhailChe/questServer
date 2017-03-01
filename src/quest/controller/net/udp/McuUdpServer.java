@@ -41,6 +41,10 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 		addService((MicroUnit) mcu, (InputByteProcessor) mcu);
 	}
 
+	public void removeService(InetSocketAddress addr) {
+		this.services.remove(addr);
+	}
+
 	@Override
 	public void run() {
 		final QLog LOG = QLog.inst();

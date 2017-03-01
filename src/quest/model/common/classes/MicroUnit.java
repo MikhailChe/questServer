@@ -33,7 +33,7 @@ public class MicroUnit implements InputByteProcessor {
 	String name;
 	@XmlElement
 	@XmlJavaTypeAdapter(value = InetSocketAddressXmlAdapter.class)
-	InetSocketAddress innerAddress;
+	volatile InetSocketAddress innerAddress;
 
 	@XmlElement
 	public List<PropertyGroup> group = new ArrayList<>();
