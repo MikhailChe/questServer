@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -97,12 +98,18 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 
 			final Runnable unitAddressUpdater = () -> {
 				try {
+
+					InetSocketAddress oldAddr = unit.getAddress();
 					unit.setAddress(new InetSocketAddressXmlAdapter().unmarshal(addressField.getText()));
 
 					QLog.inst().print(
 							"Обновил адрес устройства " + unit.getName() + ": " + unit.getAddress().toString(),
 							MsgType.INFO);
+					QuestStarter.udpServer.removeService(oldAddr);
+					QuestStarter.udpServer.addService(unit);
+
 					this.questInstance.saveXML();
+
 					addressField.setBackground(UIManager.getColor("TextField.background"));
 				} catch (Exception e) {
 					QLog.inst().print(
