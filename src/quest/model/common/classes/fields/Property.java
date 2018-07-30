@@ -166,8 +166,7 @@ public class Property implements Comparable<Property> {
 	public String toString() {
 		if (this.type != null)
 			return String.format("%s%s %s", (this.editable ? "*" : ""), this.type.getSimpleName().toString(), this.val);
-		else
-			return String.format("%s %s", (this.editable ? "*" : ""), this.val);
+		return String.format("%s %s", (this.editable ? "*" : ""), this.val);
 	}
 
 }
