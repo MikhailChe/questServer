@@ -98,9 +98,10 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 				// Пытаемся преобразовать адрес в строку
 				addressField.setText(new InetSocketAddressXmlAdapter().marshal(unit.getAddress()));
 			} catch (Exception e) {
-				QLog.inst().print(
-						"Неверный адрес в конфигурации устройства " + unit.getName() + ": " + e.getLocalizedMessage(),
-						MsgType.ERROR);
+				QLog
+						.inst()
+						.print("Неверный адрес в конфигурации устройства " + unit.getName() + ": "
+								+ e.getLocalizedMessage(), MsgType.ERROR);
 			}
 
 			final Runnable unitAddressUpdater = () -> {
@@ -109,9 +110,10 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 					InetSocketAddress oldAddr = unit.getAddress();
 					unit.setAddress(new InetSocketAddressXmlAdapter().unmarshal(addressField.getText()));
 
-					QLog.inst().print(
-							"Обновил адрес устройства " + unit.getName() + ": " + unit.getAddress().toString(),
-							MsgType.INFO);
+					QLog
+							.inst()
+							.print("Обновил адрес устройства " + unit.getName() + ": " + unit.getAddress().toString(),
+									MsgType.INFO);
 					QuestStarter.udpServer.removeService(oldAddr);
 					QuestStarter.udpServer.addService(unit);
 
@@ -119,9 +121,10 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 
 					addressField.setBackground(UIManager.getColor("TextField.background"));
 				} catch (Exception e) {
-					QLog.inst().print(
-							"Неверный адрес устроства " + unit.getName() + ". Ошибка: " + e.getLocalizedMessage(),
-							MsgType.ERROR);
+					QLog
+							.inst()
+							.print("Неверный адрес устроства " + unit.getName() + ". Ошибка: "
+									+ e.getLocalizedMessage(), MsgType.ERROR);
 					addressField.setBackground(new Color(255, 128, 128));
 				}
 			};
@@ -165,8 +168,10 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 							anyErrorsFlag.set(true);
 							controllersCount.incrementAndGet();
 						} else {
-							QLog.inst().print("Повторня инициализация устройства " + unit.getName() + ". Осталось "
-									+ currentCtr + " попытки(а).", INFO);
+							QLog
+									.inst()
+									.print("Повторня инициализация устройства " + unit.getName() + ". Осталось "
+											+ currentCtr + " попытки(а).", INFO);
 							unit.initialize();
 							initLabel.setText("Инициализация - " + (currentCtr));
 						}
@@ -174,18 +179,14 @@ public class McuAddressesGUI extends JPanel implements Scrollable {
 					retryInitTimer.setRepeats(true);
 					retryInitTimer.start();
 
-					final PropertyChangeListener pcl = new PropertyChangeListener() {
-						@Override
-						public void propertyChange(PropertyChangeEvent evt) {
-							QLog.inst().print("Успешная инициализация устройства " + unit.getName(), INFO);
-							initLabel.setText("Инициализация - ОК");
-							initLabel.setForeground(GREEN);
-							unit.removePropertyChangeListener(this);
-							retryInitTimer.stop();
-							controllersCount.incrementAndGet();
-						};
-					};
-					unit.addPropertyChangeListener(pcl);
+					unit.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+						QLog.inst().print("Успешная инициализация устройства " + unit.getName(), INFO);
+						initLabel.setText("Инициализация - ОК");
+						initLabel.setForeground(GREEN);
+						unit.removePropertyChangeListener((PropertyChangeListener) this);
+						retryInitTimer.stop();
+						controllersCount.incrementAndGet();
+					});
 				}
 			});
 			initLabel.setMinimumSize(new Dimension(0, CELL_HEIGHT));
