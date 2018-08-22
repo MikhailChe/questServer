@@ -51,7 +51,7 @@ public class UneditablePropertyGUI extends JComponent {
 			unit.addPropertyChangeListener((e) -> {
 				if (prop.getValue() != null)
 					if (prop.getValue() instanceof Number)
-						spinner.setValue((Number) prop.getValue());
+						spinner.setValue(prop.getValue());
 			});
 		}
 

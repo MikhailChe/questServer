@@ -51,7 +51,7 @@ public class McuUdpServer implements Runnable, AutoCloseable {
 	 *            (имплементирует итерфейс InputByteProcessor
 	 */
 	public <T extends MicroUnit & InputByteProcessor> void addService(T mcu) {
-		addService((MicroUnit) mcu, (InputByteProcessor) mcu);
+		addService(mcu, mcu);
 	}
 
 	/**
